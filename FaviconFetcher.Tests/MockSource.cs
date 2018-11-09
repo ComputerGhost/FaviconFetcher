@@ -49,7 +49,7 @@ namespace FaviconFetcher.Tests
         {
             ++RequestCount;
             if (!_imageResourceMap.ContainsKey(uri))
-                return null;
+                return new Image[] { };
             return _imageResourceMap[uri];
         }
 

@@ -27,7 +27,7 @@ namespace FaviconFetcher
         /// Multiple images are returned, because some file formats allow multiple images.
         /// </remarks>
         /// <param name="uri">The URI of the image file to download.</param>
-        /// <returns>All of the images found within the file.</returns>
+        /// <returns>All of the images found within the file, or an empty list.</returns>
         IEnumerable<Image> DownloadImages(Uri uri);
     }
 }
