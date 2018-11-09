@@ -264,7 +264,7 @@ namespace FaviconFetcher.Tests
 
             Assert.AreEqual(results[0], new ScanResult
             {
-                Location = new Uri("http://www.example.com/favicon_48.png"),
+                Location = new Uri("http://www.example.com/icon_21474836470_48.png"),
                 ExpectedSize = new Size(48, 48)
             });
         }
