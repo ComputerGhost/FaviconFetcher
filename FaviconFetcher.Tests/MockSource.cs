@@ -13,6 +13,8 @@ namespace FaviconFetcher.Tests
         private Dictionary<Uri, string> _textResourceMap = new Dictionary<Uri, string>();
         private Dictionary<Uri, List<Image>> _imageResourceMap = new Dictionary<Uri, List<Image>>();
 
+        public int RequestCount { get; private set; } = 0;
+
         public void Dispose()
         {
             foreach (var imageResource in _imageResourceMap)
@@ -45,6 +47,7 @@ namespace FaviconFetcher.Tests
 
         public IEnumerable<Image> DownloadImages(Uri uri)
         {
+            ++RequestCount;
             if (!_imageResourceMap.ContainsKey(uri))
                 return null;
             return _imageResourceMap[uri];
@@ -52,6 +55,7 @@ namespace FaviconFetcher.Tests
 
         public StreamReader DownloadText(Uri uri)
         {
+            ++RequestCount;
             if (!_textResourceMap.ContainsKey(uri))
                 return null;
             var contents = _textResourceMap[uri];
