@@ -53,6 +53,7 @@
     <Compile Include="MockSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScannerTests.cs" />
+    <Compile Include="FetcherTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
