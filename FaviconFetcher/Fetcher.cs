@@ -96,7 +96,10 @@ namespace FaviconFetcher
                 }
 
                 // If not, we'll look at it later.
-                notVerified.Add(_GetDistance(possibleIcon.ExpectedSize, options), possibleIcon);
+                else
+                {
+                    notVerified.Add(_GetDistance(possibleIcon.ExpectedSize, options), possibleIcon);
+                }
             }
 
             // Download them, prioritizing those closest to perfect
