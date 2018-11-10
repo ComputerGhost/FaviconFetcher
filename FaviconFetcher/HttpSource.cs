@@ -44,8 +44,12 @@ namespace FaviconFetcher
             // Otherwise default to ASCII, since it'll be ASCII-compatible.
             if (response.ContentType.Contains("charset="))
             {
-                var encoding = Encoding.GetEncoding(response.CharacterSet);
-                return new StreamReader(response.GetResponseStream(), encoding);
+                try
+                {
+                    var encoding = Encoding.GetEncoding(response.CharacterSet);
+                    return new StreamReader(response.GetResponseStream(), encoding);
+                }
+                catch (NotSupportedException) { }
             }
             return new StreamReader(response.GetResponseStream(), Encoding.ASCII, true);
         }
