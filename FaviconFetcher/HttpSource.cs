@@ -34,7 +34,10 @@ namespace FaviconFetcher
         {
             var response = _GetWebResponse(uri);
             if (response.StatusCode != HttpStatusCode.OK)
+            {
+                response.Dispose(); // since we won't be passing on the response stream.
                 return null;
+            }
 
             // Header has priority.
             // Byte Order Mark is second priority.
@@ -55,27 +58,26 @@ namespace FaviconFetcher
         public IEnumerable<Image> DownloadImages(Uri uri)
         {
             var images = new List<Image>();
-
-            var response = _GetWebResponse(uri);
-            if (response.StatusCode != HttpStatusCode.OK)
-                return images;
-
-            if (_IsIcoFile(response.ContentType))
+            using (var response = _GetWebResponse(uri))
             {
-                var memoryStream = new MemoryStream();
-                using (var responseStream = response.GetResponseStream())
-                    responseStream.CopyTo(memoryStream);
+                if (response.StatusCode != HttpStatusCode.OK)
+                    return images;
 
-                foreach (var size in _ExtractIcoSizes(memoryStream))
+                if (_IsIcoFile(response.ContentType))
                 {
-                    memoryStream.Position = 0;
-                    images.Add(new Icon(memoryStream, size).ToBitmap());
-                }
-                return images;
-            }
-            else
-                images.Add(Image.FromStream(response.GetResponseStream()));
+                    var memoryStream = new MemoryStream();
+                    response.GetResponseStream().CopyTo(memoryStream);
 
+                    foreach (var size in _ExtractIcoSizes(memoryStream))
+                    {
+                        memoryStream.Position = 0;
+                        images.Add(new Icon(memoryStream, size).ToBitmap());
+                    }
+                    return images;
+                }
+                else
+                    images.Add(Image.FromStream(response.GetResponseStream()));
+            }
             return images;
         }
 
