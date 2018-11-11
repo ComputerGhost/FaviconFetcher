@@ -44,13 +44,18 @@ namespace FaviconFetcher
             var scans = new Queue<SubScanner>();
             scans.Enqueue(new DefaultScanner(Source, uri));
 
+            // While we have subscanners queued
             var max_scans = 4;
             while (scans.Count > 0 && max_scans-- > 0)
             {
                 var scan = scans.Dequeue();
                 scan.Start();
+
+                // Go through found favicon references
                 foreach (var result in scan.Results)
                     yield return result;
+
+                // Add all subscanners that are suggested
                 foreach (var suggested in scan.SuggestedScanners)
                     scans.Enqueue(suggested);
             }

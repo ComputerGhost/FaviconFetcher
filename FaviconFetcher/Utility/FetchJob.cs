@@ -50,7 +50,7 @@ namespace FaviconFetcher.Utility
                 // Hopefully we've already found it
                 if (_IsPerfect(possibleIcon.ExpectedSize))
                 {
-                    var image = DownloadImages(possibleIcon.Location);
+                    var image = DownloadImages_ReturnPerfect(possibleIcon.Location);
                     if (image != null)
                         return image;
                 }
@@ -65,7 +65,7 @@ namespace FaviconFetcher.Utility
             // Download them, prioritizing those closest to perfect
             foreach (var possibleIcon in notVerified)
             {
-                var image = DownloadImages(possibleIcon.Location);
+                var image = DownloadImages_ReturnPerfect(possibleIcon.Location);
                 if (image != null)
                     return image;
             }
@@ -78,7 +78,7 @@ namespace FaviconFetcher.Utility
 
 
         // Downloads images. If perfect found, returns it.
-        private Image DownloadImages(Uri uri)
+        private Image DownloadImages_ReturnPerfect(Uri uri)
         {
             foreach (var image in Source.DownloadImages(uri))
             {
