@@ -8,7 +8,7 @@ namespace FaviconFetcher.Tests
     public class FetcherTests
     {
         [TestMethod]
-        public void ShouldMakeTwoRequestsWhenNoneSpecified()
+        public void Fetcher_NoLinks_MakeTwoRequests()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();

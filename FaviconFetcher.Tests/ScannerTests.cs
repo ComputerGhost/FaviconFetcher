@@ -10,7 +10,7 @@ namespace FaviconFetcher.Tests
     {
 
         [TestMethod]
-        public void ShouldUseFaviconIcoWhenNoneSpecified()
+        public void Scan_NoLinks_ReturnDefault()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -28,7 +28,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldHandleIconLink()
+        public void Scan_OneLink_Returned()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -48,7 +48,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldHandleIconLinkWithSizes()
+        public void Scan_LinkHasSizes_UseSizes()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -73,7 +73,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldHandleMultipleIconLinks()
+        public void Scan_MultipleLinks_ReturnAll()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -90,7 +90,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldSkipInvalidIconLink()
+        public void Scan_InvalidLinks_ReturnDefault()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -107,7 +107,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldUseFaviconIcoWhenNotFound()
+        public void Scan_NotFound_ReturnDefault()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -119,7 +119,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldDefaultSize57x57WhenApple()
+        public void Scan_AppleLink_UseSize57x57()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -139,7 +139,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldUseSpecifiedSizeWhenApple()
+        public void Scan_SizedAppleLink_UseSpecifiedSize()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -159,7 +159,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldDeduceSizeFromName()
+        public void Scan_SizeInName_UseGuessedSize()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -179,7 +179,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldHandleInvalidHtml_UnterminatedQuote()
+        public void Scan_HtmlQuoteUnterminated_ReturnDefault()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -192,7 +192,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldHandleInvalidHtml_CutAtValue()
+        public void Scan_HtmlEndsAtValue_ReturnDefault()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -205,7 +205,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldHandleInvalidHtml_CutAfterLink()
+        public void Scan_HtmlEndsAtTag_ReturnDefault()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -218,7 +218,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldIgnoreIconLinkInBody()
+        public void Scan_LinkInBody_Ignored()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -234,7 +234,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldHandleMixedQuotes()
+        public void Scan_MixedQuotes_Returned()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -250,7 +250,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void ShouldHandleBigNumbersInUri()
+        public void Scan_BigNumberInUri_Returned()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
