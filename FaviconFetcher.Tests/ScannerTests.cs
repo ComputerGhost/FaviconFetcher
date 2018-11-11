@@ -179,6 +179,26 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
+        public void Scan_SizeInNameAndAttribute_UseAttributeSize()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <link rel=icon href='favicon_48x48.png' sizes='16x16'>
+                </head><body>Fake content.</body></html>");
+
+            var scanner = new Scanner(source);
+            var results = scanner.Scan(uri).ToArray();
+
+            Assert.AreEqual(results[0], new ScanResult
+            {
+                Location = new Uri("http://www.example.com/favicon_48x48.png"),
+                ExpectedSize = new Size(16, 16)
+            });
+        }
+
+        [TestMethod]
         public void Scan_HtmlQuoteUnterminated_ReturnDefault()
         {
             var uri = new Uri("http://www.example.com");
