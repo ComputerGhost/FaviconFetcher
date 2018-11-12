@@ -116,3 +116,9 @@ var image = fetcher.FetchClosest(uri, new Size(16, 16));
 
 Please use the Issues tab on our GitHub page to file bug reports. Or, you may contact me directly if you know my contact information.
 
+
+## Credits
+
+### External libraries:
+ * FaviconFetcher uses [ConcurrentPriorityQueue by dshulepov](https://github.com/dshulepov/ConcurrentPriorityQueue) to prioritize scanned icons.
+
