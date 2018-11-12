@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConcurrentPriorityQueue;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -20,8 +21,8 @@ namespace FaviconFetcher.Utility
         // Options for the fetch
         FetchOptions Options;
 
-        PriorityQueue<double, Image> downloadedImages = new PriorityQueue<double, Image>();
-        PriorityQueue<double, ScanResult> notVerified = new PriorityQueue<double, ScanResult>();
+        ConcurrentPriorityQueue<Image, double> downloadedImages = new ConcurrentPriorityQueue<Image, double>();
+        ConcurrentPriorityQueue<ScanResult, double> notVerified = new ConcurrentPriorityQueue<ScanResult, double>();
 
         public FetchJob(ISource source, Uri uri, FetchOptions options)
         {
@@ -58,7 +59,7 @@ namespace FaviconFetcher.Utility
                 // If not, we'll look at it later.
                 else
                 {
-                    notVerified.Add(_GetDistance(possibleIcon.ExpectedSize), possibleIcon);
+                    notVerified.Enqueue(possibleIcon, _GetDistance(possibleIcon.ExpectedSize));
                 }
             }
 
@@ -73,7 +74,7 @@ namespace FaviconFetcher.Utility
             // Since none were a perfect match, just return the closest
             if (downloadedImages.Count == 0)
                 return null;
-            return downloadedImages.First();
+            return downloadedImages.Dequeue();
         }
 
 
@@ -89,7 +90,7 @@ namespace FaviconFetcher.Utility
                     image.Dispose();
                     continue;
                 }
-                downloadedImages.Add(_GetDistance(image.Size), image);
+                downloadedImages.Enqueue(image, _GetDistance(image.Size));
             }
             return null;
         }
