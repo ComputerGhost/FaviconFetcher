@@ -19,12 +19,12 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1);
-            Assert.AreEqual(results[0], new ScanResult
+            Assert.AreEqual(1, results.Length);
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon.ico"),
                 ExpectedSize = new Size(16, 16)
-            });
+            }, results[0]);
         }
 
         [TestMethod]
@@ -40,11 +40,11 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results[0], new ScanResult
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon.png"),
                 ExpectedSize = new Size(16, 16)
-            });
+            }, results[0]);
         }
 
         [TestMethod]
@@ -60,16 +60,16 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results[0], new ScanResult
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicons.ico"),
                 ExpectedSize = new Size(16, 16)
-            });
-            Assert.AreEqual(results[1], new ScanResult
+            }, results[0]);
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicons.ico"),
                 ExpectedSize = new Size(32, 32)
-            });
+            }, results[1]);
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 3); // 2 above plus the default
+            Assert.AreEqual(3, results.Length); // 2 above plus the default
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1);
+            Assert.AreEqual(1, results.Length);
         }
 
         [TestMethod]
@@ -131,11 +131,11 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results[0], new ScanResult
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/apple_icon.png"),
                 ExpectedSize = new Size(57, 57)
-            });
+            }, results[0]);
         }
 
         [TestMethod]
@@ -151,11 +151,11 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results[0], new ScanResult
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/apple_icon.png"),
                 ExpectedSize = new Size(48, 48)
-            });
+            }, results[0]);
         }
 
         [TestMethod]
@@ -171,11 +171,11 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results[0], new ScanResult
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon_48x48.png"),
                 ExpectedSize = new Size(48, 48)
-            });
+            }, results[0]);
         }
 
         [TestMethod]
@@ -191,11 +191,11 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results[0], new ScanResult
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon_48x48.png"),
                 ExpectedSize = new Size(16, 16)
-            });
+            }, results[0]);
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -221,7 +221,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -234,7 +234,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -250,7 +250,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -266,7 +266,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -282,11 +282,11 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results[0], new ScanResult
+            Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/icon_21474836470_48.png"),
                 ExpectedSize = new Size(48, 48)
-            });
+            }, results[0]);
         }
 
         [TestMethod]
@@ -302,7 +302,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // just the default
+            Assert.AreEqual(1, results.Length); // just the default
         }
 
         [TestMethod]
@@ -331,7 +331,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 5); // 4 + default
+            Assert.AreEqual(5, results.Length); // 4 + default
         }
 
         [TestMethod]
@@ -347,7 +347,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -363,7 +363,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -392,7 +392,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 4); // 3 + default
+            Assert.AreEqual(4, results.Length); // 3 + default
         }
 
         [TestMethod]
@@ -410,7 +410,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -432,7 +432,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 3); // 2 + default
+            Assert.AreEqual(3, results.Length); // 2 + default
         }
 
         [TestMethod]
@@ -448,7 +448,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -464,7 +464,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
         [TestMethod]
@@ -486,7 +486,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 2); // 1 + default
+            Assert.AreEqual(2, results.Length); // 1 + default
         }
 
         [TestMethod]
@@ -508,7 +508,7 @@ namespace FaviconFetcher.Tests
             var scanner = new Scanner(source);
             var results = scanner.Scan(uri).ToArray();
 
-            Assert.AreEqual(results.Length, 1); // Just the default
+            Assert.AreEqual(1, results.Length); // Just the default
         }
 
     }

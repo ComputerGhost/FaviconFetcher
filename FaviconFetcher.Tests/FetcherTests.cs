@@ -17,7 +17,7 @@ namespace FaviconFetcher.Tests
             var fetcher = new Fetcher(source);
             fetcher.FetchClosest(uri, new Size(16, 16));
 
-            Assert.AreEqual(source.RequestCount, 2);
+            Assert.AreEqual(2, source.RequestCount);
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace FaviconFetcher.Tests
             var fetcher = new Fetcher(source);
             fetcher.FetchClosest(uri, new Size(16, 16));
 
-            Assert.AreEqual(source.RequestCount, 3);
+            Assert.AreEqual(3, source.RequestCount);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace FaviconFetcher.Tests
             var fetcher = new Fetcher(source);
             fetcher.FetchClosest(uri, new Size(16, 16));
 
-            Assert.AreEqual(source.RequestCount, 2);
+            Assert.AreEqual(2, source.RequestCount);
         }
 
         [TestMethod]
@@ -68,8 +68,8 @@ namespace FaviconFetcher.Tests
             var fetcher = new Fetcher(source);
             var image = fetcher.FetchClosest(uri, new Size(32, 32));
 
-            Assert.AreEqual(source.RequestCount, 2);
-            Assert.AreEqual(image.Size, new Size(32, 32));
+            Assert.AreEqual(2, source.RequestCount);
+            Assert.AreEqual(new Size(32, 32), image.Size);
         }
     }
 }
