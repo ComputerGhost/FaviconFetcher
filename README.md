@@ -32,7 +32,7 @@ Common uses are listed below.  The full documentation exists in the public class
 
 The scanner parses a webpage, looking for references to favicons.
 
-```
+```csharp
 var scanner = new Scanner();
 foreach (var result in scanner.Scan(uri))
 {
@@ -64,14 +64,14 @@ If the webpage cannot be downloaded for parsing, then just the old default /favi
 
 The scanner is great, but those favicons need downloaded, parsed, and verified.  The fetcher does that and returns the best match.
 
-```
+```csharp
 var fetcher = new Fetcher();
 var image = fetcher.FetchClosest(uri, new Size(16, 16));
 ```
 
 Pretty simple, right?  The fetcher has several methods to download the perfect favicon.  The one below is the most configurable:
 
-```
+```csharp
 var fetcher = new Fetcher();
 var image = fetcher.Fetch(uri, new FetchOptions
 {
@@ -95,7 +95,7 @@ Both `Scanner` and `Fetcher` have a constructor that takes an `ISource`, which c
 
 By default, caching is turned off.  Turn it on by passing an `HttpSource` with `CachePolicy` set.
 
-```
+```csharp
 var source = new HttpSource() {
     CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
 }
@@ -105,7 +105,7 @@ var image = fetcher.FetchClosest(uri, new Size(16, 16));
 
 Or, you can just do this to use the cache for all requests:
 
-```
+```csharp
 WebRequest.DefaultCachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
 var fetcher = new Fetcher();
 var image = fetcher.FetchClosest(uri, new Size(16, 16));
