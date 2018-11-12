@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FaviconFetcher.Tests
+namespace FaviconFetcher.Tests.Utility
 {
     class MockSource : ISource, IDisposable
     {

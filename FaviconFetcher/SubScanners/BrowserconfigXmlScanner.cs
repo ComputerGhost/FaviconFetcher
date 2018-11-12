@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,9 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
+#if DEBUG
+[assembly: InternalsVisibleTo("FaviconFetcher.Tests")]
+#endif
 namespace FaviconFetcher.SubScanners
 {
     class BrowserconfigXmlScanner : SubScanner

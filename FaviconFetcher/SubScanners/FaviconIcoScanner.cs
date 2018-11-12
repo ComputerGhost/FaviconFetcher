@@ -4,9 +4,13 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+#if DEBUG
+[assembly: InternalsVisibleTo("FaviconFetcher.Tests")]
+#endif
 namespace FaviconFetcher.SubScanners
 {
     class FaviconIcoScanner : SubScanner

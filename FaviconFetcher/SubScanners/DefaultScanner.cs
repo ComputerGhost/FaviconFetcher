@@ -5,10 +5,14 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+#if DEBUG
+[assembly: InternalsVisibleTo("FaviconFetcher.Tests")]
+#endif
 namespace FaviconFetcher.SubScanners
 {
     class DefaultScanner : SubScanner

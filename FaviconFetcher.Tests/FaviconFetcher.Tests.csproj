@@ -50,10 +50,13 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MockSource.cs" />
+    <Compile Include="DefaultScannerTests.cs" />
+    <Compile Include="Utility\MockSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScannerTests.cs" />
     <Compile Include="FetcherTests.cs" />
+    <Compile Include="BrowserConfigXmlScannerTests.cs" />
+    <Compile Include="ManifestJsonScannerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
