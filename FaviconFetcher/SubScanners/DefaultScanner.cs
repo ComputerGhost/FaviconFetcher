@@ -110,21 +110,47 @@ namespace FaviconFetcher.SubScanners
             // Now we can finally add the favicons, one instance for each size
             foreach (var size in sizes)
             {
-                Results.Add(new ScanResult
+                try
                 {
-                    ExpectedSize = size,
-                    Location = new Uri(TargetUri, href)
-                });
+                    Results.Add(new ScanResult
+                    {
+                        ExpectedSize = size,
+                        Location = new Uri(TargetUri, href)
+                    });
+                }
+                catch (UriFormatException) { }
             }
         }
 
         private void _ParseMeta(TextParser parser)
         {
-            /*
-             * This is currently not implemented:
-             * - browserconfig.xml support
-             * - manifest.json support
-             */
+            var attributes = _ParseAttributes(parser);
+
+            // <meta rel="manifest" href="manifest.json">
+            if (attributes.ContainsKey("rel") && attributes["rel"] == "manifest")
+            {
+                if (!attributes.ContainsKey("href"))
+                    return;
+                try
+                {
+                    var uri = new Uri(TargetUri, attributes["href"]);
+                    SuggestedScanners.Add(new ManifestJsonScanner(Source, uri));
+                }
+                catch (UriFormatException) { }
+            }
+
+            // <meta name="msapplication-config" content="browserconfig.xml">
+            else if (attributes.ContainsKey("name") && attributes["name"] == "msapplication-config")
+            {
+                if (!attributes.ContainsKey("content"))
+                    return;
+                try
+                {
+                    var uri = new Uri(TargetUri, attributes["content"]);
+                    SuggestedScanners.Add(new BrowserconfigXmlScanner(Source, uri));
+                }
+                catch (UriFormatException) { }
+            }
         }
 
         private Dictionary<string, string> _ParseAttributes(TextParser parser)
