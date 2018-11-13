@@ -59,7 +59,7 @@ namespace FaviconFetcher.Utility
                 // If not, we'll look at it later.
                 else
                 {
-                    notVerified.Enqueue(possibleIcon, _GetDistance(possibleIcon.ExpectedSize));
+                    notVerified.Enqueue(possibleIcon, -1 * _GetDistance(possibleIcon.ExpectedSize));
                 }
             }
 
@@ -90,7 +90,7 @@ namespace FaviconFetcher.Utility
                     image.Dispose();
                     continue;
                 }
-                downloadedImages.Enqueue(image, _GetDistance(image.Size));
+                downloadedImages.Enqueue(image, -1 * _GetDistance(image.Size));
             }
             return null;
         }
