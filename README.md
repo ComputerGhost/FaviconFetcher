@@ -6,7 +6,7 @@ FaviconFetcher is a library for scanning a webpage for favicons and downloading 
 
 ### Features
 
- * Supports manifest.json and browserconfig.xml, if linked from the HTML. (not yet complete)
+ * Supports manifest.json and browserconfig.xml, if linked from the HTML.
  * On-demand downloading to save bandwidth.
  * Cache shared with other applications (off by default).
  * Easy to use.
@@ -49,7 +49,7 @@ The scanner downloads resources as needed, so breaking out of the loop early wil
 The HTML is first downloaded and parsed.  The order of favicon links returned are:
 
  * Those in `<link>` tags.
- * Those in browserconfig.xml and manifest.json, if referenced in the HTML. (not yet complete)
+ * Those in browserconfig.xml and manifest.json, if referenced in the HTML.
  * /favicon.ico.
 
 If the webpage cannot be downloaded for parsing, then just the old default /favicon.ico is returned.
