@@ -115,7 +115,19 @@ namespace FaviconFetcher
             var request = WebRequest.Create(uri) as HttpWebRequest;
             request.CachePolicy = CachePolicy;
             request.UserAgent = UserAgent;
-            return request.GetResponse() as HttpWebResponse;
+
+            // GetResponse returns response in exception if error code...
+            // so we need to handle it in a try-catch.
+            try
+            {
+                return request.GetResponse() as HttpWebResponse;
+            }
+            catch (WebException ex)
+            {
+                if (ex.Response == null)
+                    throw;
+                return ex.Response as HttpWebResponse;
+            }
         }
 
         // Check whether the content type is an ico.
