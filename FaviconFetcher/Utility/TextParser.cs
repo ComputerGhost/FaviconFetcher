@@ -36,6 +36,7 @@ namespace FaviconFetcher.Utility
         }
 
         // Read until a needle is found.
+        // needle must be a nonempty string.
         public void SkipUntil(string needle)
         {
             int foundIndex = 0;
@@ -48,14 +49,52 @@ namespace FaviconFetcher.Utility
             }
         }
 
+        // Read until a needle is found.
+        // needle must be a lowercase nonempty string.
+        public void CaseInsensitiveSkipUntil(string needle)
+        {
+            int foundIndex = 0;
+            while (!Reader.EndOfStream && foundIndex < needle.Length)
+            {
+                var readChar = char.ToLower((char)Reader.Read());
+                if (readChar == needle[foundIndex])
+                    ++foundIndex;
+                else
+                    foundIndex = 0;
+            }
+        }
+
         // Read until one of the needles are found, and returns it.
-        // Warning: it will break if a needle is an empty string.
+        // needles must be nonempty strings.
         public string SkipUntil(params string[] needles)
         {
             var foundIndices = new int[needles.Length];
             while (!Reader.EndOfStream)
             {
-                var currentChar = Reader.Read();
+                var currentChar = (char)Reader.Read();
+                for (var i = 0; i != needles.Length; ++i)
+                {
+                    if (currentChar == needles[i][foundIndices[i]])
+                    {
+                        ++foundIndices[i];
+                        if (foundIndices[i] >= needles[i].Length)
+                            return needles[i];
+                    }
+                    else
+                        foundIndices[i] = 0;
+                }
+            }
+            return null;
+        }
+
+        // Read until one of the needles are found, and returns it.
+        // needles must be nonempty lowercase strings.
+        public string CaseInsensitiveSkipUntil(params string[] needles)
+        {
+            var foundIndices = new int[needles.Length];
+            while (!Reader.EndOfStream)
+            {
+                var currentChar = char.ToLower((char)Reader.Read());
                 for (var i = 0; i != needles.Length; ++i)
                 {
                     if (currentChar == needles[i][foundIndices[i]])

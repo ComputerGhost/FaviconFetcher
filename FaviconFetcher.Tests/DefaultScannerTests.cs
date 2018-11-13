@@ -31,6 +31,42 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
+        public void Results_LinkRelInCaps_FindIt()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <link rel='SHORTCUT ICON' href='favicon.png'>
+                </head><body>Fake content.</body></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual(new ScanResult
+            {
+                Location = new Uri("http://www.example.com/favicon.png"),
+                ExpectedSize = new Size(16, 16)
+            }, scanner.Results[0]);
+        }
+
+        [TestMethod]
+        public void Results_HtmlInCaps_ParseIt()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <HTML><HEAD>
+                    <link rel='SHORTCUT ICON' href='favicon.png'>
+                </HEAD><BODY>Fake content.</BODY></HTML>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual(1, scanner.Results.Count);
+        }
+
+        [TestMethod]
         public void Results_LinkHasSizes_UseSizes()
         {
             var uri = new Uri("http://www.example.com");

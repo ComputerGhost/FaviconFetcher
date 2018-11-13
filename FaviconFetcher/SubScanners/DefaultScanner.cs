@@ -36,13 +36,13 @@ namespace FaviconFetcher.SubScanners
 
         private void _ParsePage(TextParser parser)
         {
-            parser.SkipUntil("<html");
-            if (parser.SkipUntil("<head", "<body") != "<head")
+            parser.CaseInsensitiveSkipUntil("<html");
+            if (parser.CaseInsensitiveSkipUntil("<head", "<body") != "<head")
                 return;
 
             while (!parser.EndOfStream)
             {
-                switch (parser.SkipUntil("</head", "<link", "<meta"))
+                switch (parser.CaseInsensitiveSkipUntil("</head", "<link", "<meta"))
                 {
                     case "<link": _ParseLink(parser); break;
                     case "<meta": _ParseMeta(parser); break;
@@ -63,9 +63,9 @@ namespace FaviconFetcher.SubScanners
             // The relation needs to be an icon.
             if (!attributes.ContainsKey("rel"))
                 return;
-            if (!attributes["rel"].Contains("icon"))
+            var rel = attributes["rel"].ToLower();
+            if (!rel.Contains("icon"))
                 return;
-            var rel = attributes["rel"];
 
             // Get the sizes specified
             var sizes = new List<Size>();
@@ -157,12 +157,13 @@ namespace FaviconFetcher.SubScanners
             }
         }
 
+        // Returns dictionary of (attribute.ToLower, value)
         private Dictionary<string, string> _ParseAttributes(TextParser parser)
         {
             var keyvalues = new Dictionary<string, string>();
             while (!parser.EndOfStream && parser.Peek() != '>')
             {
-                var key = _ParseKey(parser);
+                var key = _ParseKeyLowercased(parser);
                 if (key.Length == 0)
                     break;
                 keyvalues[key] = _ParseValue(parser);
@@ -170,7 +171,8 @@ namespace FaviconFetcher.SubScanners
             return keyvalues;
         }
 
-        private string _ParseKey(TextParser parser)
+        // Returns lowercase version of key
+        private string _ParseKeyLowercased(TextParser parser)
         {
             var builder = new StringBuilder();
             parser.SkipWhitespace();
