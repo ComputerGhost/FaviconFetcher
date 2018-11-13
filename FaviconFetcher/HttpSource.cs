@@ -99,6 +99,7 @@ namespace FaviconFetcher
             for (var i = 0; i != count; ++i)
             {
                 var offset = 6 + i * 16;
+                stream.Seek(offset, SeekOrigin.Begin);
                 int width = reader.ReadByte();
                 if (width == 0) width = 256;
                 int height = reader.ReadByte();
