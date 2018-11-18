@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaviconFetcher", "FaviconFetcher\FaviconFetcher.csproj", "{FA32A521-EB11-4E9A-A31A-28195EC9FE27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FaviconFetcher", "FaviconFetcher\FaviconFetcher.csproj", "{FA32A521-EB11-4E9A-A31A-28195EC9FE27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{6F491A4C-017E-4986-BCD5-7D4F2FE58202}"
 EndProject
@@ -26,7 +26,6 @@ Global
 		{A30CE1CF-5E3B-4771-9C2D-6FE785799B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A30CE1CF-5E3B-4771-9C2D-6FE785799B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A30CE1CF-5E3B-4771-9C2D-6FE785799B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A30CE1CF-5E3B-4771-9C2D-6FE785799B8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

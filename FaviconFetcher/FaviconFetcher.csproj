@@ -9,16 +9,12 @@
     <PackageProjectUrl>https://github.com/ComputerGhost/FaviconFetcher</PackageProjectUrl>
     <Description>Tools to scan a webpage for possible favicons (Scanner) and download the perfect one (Fetcher).  Resources are prioritized and downloaded on demand, and caching is supported.</Description>
     <PackageTags>favicon, webpage, icon</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="PriorityQueue" Version="0.1.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="ConcurrentPriorityQueue, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PriorityQueue.0.1.0\lib\net45\ConcurrentPriorityQueue.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
