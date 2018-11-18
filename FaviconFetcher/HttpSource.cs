@@ -67,20 +67,35 @@ namespace FaviconFetcher
                 if (response.StatusCode != HttpStatusCode.OK)
                     return images;
 
-                if (_IsIcoFile(response.ContentType))
-                {
-                    var memoryStream = new MemoryStream();
-                    response.GetResponseStream().CopyTo(memoryStream);
+                var memoryStream = new MemoryStream();
+                response.GetResponseStream().CopyTo(memoryStream);
 
-                    foreach (var size in _ExtractIcoSizes(memoryStream))
+                // Ico file
+                if (_IsContentTypeIco(response.ContentType))
+                {
+                    try
                     {
-                        memoryStream.Position = 0;
-                        images.Add(new Icon(memoryStream, size).ToBitmap());
+                        foreach (var size in _ExtractIcoSizes(memoryStream))
+                        {
+                            memoryStream.Position = 0;
+                            images.Add(new Icon(memoryStream, size).ToBitmap());
+                        }
+                        return images;
                     }
-                    return images;
+
+                    // Sometimes a website lies about "ico".
+                    catch (EndOfStreamException) { }
+                    catch (ArgumentException) { }
+                    // We'll let this fall through to try another image type.
+                    memoryStream.Position = 0;
                 }
-                else
-                    images.Add(Image.FromStream(response.GetResponseStream()));
+
+                // Other image type
+                try
+                {
+                    images.Add(Image.FromStream(memoryStream));
+                }
+                catch (ArgumentException) {}
             }
             return images;
         }
@@ -92,7 +107,7 @@ namespace FaviconFetcher
             var reader = new BinaryReader(stream, Encoding.UTF8, true);
 
             // Skip to count
-            stream.Seek(4, SeekOrigin.Begin);
+            stream.Seek(4000, SeekOrigin.Begin);
             var count = reader.ReadInt16();
 
             var sizes = new List<Size>();
@@ -131,9 +146,10 @@ namespace FaviconFetcher
             }
         }
 
-        // Check whether the content type is an ico.
-        private bool _IsIcoFile(string contentType)
+        // Check whether the file is an ico.
+        private bool _IsContentTypeIco(string contentType)
         {
+            // Check content type
             var iconTypes = new[] {
                 "image/x-icon",
                 "image/vnd.microsoft.icon",
