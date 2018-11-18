@@ -42,7 +42,7 @@ This constructor, along with an `HttpSource` is useful for specifying caching ru
 
 ```csharp
 var source = new HttpSource() {
-    CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
+    CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable)
 };
 var fetcher = new Fetcher(source);
 ```
