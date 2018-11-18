@@ -1,36 +1,55 @@
 # Favicon Fetcher
 
-FaviconFetcher will be released on November 30th, 2018.  You may use it in the meantime, but features and optimizations are still in progress.
+FaviconFetcher contains tools for scanning a webpage for possible favicons (Scanner) and downloading the perfect one (Fetcher).
 
-FaviconFetcher is a library for scanning a webpage for favicons and downloading them.
+This library is perfect for non-browsers that need to download a favicon for a webpage.
 
-### Features
 
- * Supports manifest.json and browserconfig.xml, if linked from the HTML.
- * On-demand downloading to save bandwidth.
+## Features
+
+Favicon fetcher was built to include all needed functionality with ease of use and efficiency in mind.
+
+ * Resources are prioritized and downloaded on demand.
  * Cache shared with other applications (off by default).
+ * Supports manifest.json and browserconfig.xml, if linked from the HTML.
  * Easy to use.
- 
-### Items left to do
-
- * Code in manifest.json and browserconfig.xml support.
- * Unit tests for Fetcher.
- * More readable unit tests.
- * Setup Nuget package.
 
 
 ## Installation
 
-tbd.  Eventually, I hope to have this set up as a nuget package.
+### Method 1 (Easy)
+
+   1. Use Nuget Package Manager to install "FaviconFetcher".
+
+### Method 2 (Hard)
+
+   1. Download the source code.
+   2. Compile it.  If compiling as "Release", ignore the errors in the FaviconFetcher.Tests project.
+   3. Copy the library file to where you want it.
+   4. Add a reference to it from your own project.
 
 
 ## How to Use
 
-Common uses are listed below.  The full documentation exists in the public classes and the Object Browser.
+Common uses are listed below.  The full documentation is at <https://github.com/ComputerGhost/FaviconFetcher/tree/master/doc>.  In places where the code differs from the documentation, the documentation is correct.
+
+
+### Fetcher - Find the Best Match
+
+The fetcher will scan a webpage for favicons and download the one that best matches the given constraints.
+
+```csharp
+var fetcher = new Fetcher();
+var image = fetcher.FetchClosest(uri, new Size(16, 16));
+// Don't forget to dispose of the image when no longer needed.
+```
+
+Other methods include `FetchExact` and `Fetch`.  See the documentation for the full list and how to use them.
+
 
 ### Scanner - Get a List of Favicons
 
-The scanner parses a webpage, looking for references to favicons.
+To get a list of possible favicons without downloading any, use the scanner.
 
 ```csharp
 var scanner = new Scanner();
@@ -42,73 +61,20 @@ foreach (var result in scanner.Scan(uri))
 }
 ```
 
-The scanner downloads resources as needed, so breaking out of the loop early will save bandwidth.
-
-#### Order of Favicons Returned
-
-The HTML is first downloaded and parsed.  The order of favicon links returned are:
-
- * Those in `<link>` tags.
- * Those in browserconfig.xml and manifest.json, if referenced in the HTML.
- * /favicon.ico.
-
-If the webpage cannot be downloaded for parsing, then just the old default /favicon.ico is returned.
-
-#### Watch out!
-
- * The favicons are not downloaded and verified, so they may not exist or may be invalid.
- * Duplicates may be returned.
-
-
-### Fetcher - Find the Best Match
-
-The scanner is great, but those favicons need downloaded, parsed, and verified.  The fetcher does that and returns the best match.
-
-```csharp
-var fetcher = new Fetcher();
-var image = fetcher.FetchClosest(uri, new Size(16, 16));
-```
-
-Pretty simple, right?  The fetcher has several methods to download the perfect favicon.  The one below is the most configurable:
-
-```csharp
-var fetcher = new Fetcher();
-var image = fetcher.Fetch(uri, new FetchOptions
-{
-    MinimumSize = minSize,
-    MaximumSize = maxSize,
-    PerfectSize = perfectSize,
-    RequireSquare = true
-});
-```
-
-#### Optimizing and Efficiency
-
-Like the scanner, the fetcher downloads resources as needed.  The usual case is two HTTP requests, but the worst case is all of the resources being downloaded.  Passing the correct parameters is important.
-
-Prefer methods that take a `PerfectSize` parameter, such as `FetchClosest` or `Fetch`.  When the perfect size is found, it doesn't bother downloading and processing the rest of them.
+Keep in mind that an icon may not exist, may be invalid, may be a different size than the one reported, or may be a duplicate.  Unlike the fetcher, the scanner does not verify that its results are correct.
 
 
 ### HttpSource - Caching
 
-Both `Scanner` and `Fetcher` have a constructor that takes an `ISource`, which controls how resources are downloaded.  `HttpSource` is the recommended one to use, and it supports caching that is shared with other applications.
-
-By default, caching is turned off.  Turn it on by passing an `HttpSource` with `CachePolicy` set.
+Caching is supported by both the fetcher and the scanner, but it is off by default.  To enable caching, pass a configured `HttpSource` to the constructor.
 
 ```csharp
 var source = new HttpSource() {
-    CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
-}
+    CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable)
+};
 var fetcher = new Fetcher(source);
 var image = fetcher.FetchClosest(uri, new Size(16, 16));
-```
-
-Or, you can just do this to use the cache for all requests:
-
-```csharp
-WebRequest.DefaultCachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
-var fetcher = new Fetcher();
-var image = fetcher.FetchClosest(uri, new Size(16, 16));
+// Don't forget to dispose of the image when no longer needed.
 ```
 
 
@@ -120,5 +86,5 @@ Please use the Issues tab on our GitHub page to file bug reports. Or, you may co
 ## Credits
 
 ### External libraries:
- * FaviconFetcher uses [ConcurrentPriorityQueue by dshulepov](https://github.com/dshulepov/ConcurrentPriorityQueue) to prioritize scanned icons.
+ * The fetcher uses [ConcurrentPriorityQueue by dshulepov](https://github.com/dshulepov/ConcurrentPriorityQueue) to prioritize scanned icons.
 
