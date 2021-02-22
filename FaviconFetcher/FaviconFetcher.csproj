@@ -10,8 +10,9 @@
     <Description>Tools to scan a webpage for possible favicons (Scanner) and download the perfect one (Fetcher).  Resources are prioritized and downloaded on demand, and caching is supported.</Description>
     <PackageTags>favicon, webpage, icon</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
-    <PackageReleaseNotes>Invalid ico files no longer throw an exception and are instead skipped.</PackageReleaseNotes>
+    <Version>1.1.0</Version>
+    <PackageReleaseNotes>- ConcurrentPriorityQueue included in FaviconFetcher instead of requiring a dead repo.
+- Dependencies updated.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
