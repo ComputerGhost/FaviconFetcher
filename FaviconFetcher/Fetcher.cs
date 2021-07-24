@@ -1,10 +1,7 @@
 ﻿using FaviconFetcher.Utility;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace FaviconFetcher
 {
@@ -18,9 +15,10 @@ namespace FaviconFetcher
         /// <summary>
         /// Constructs a Fetcher that uses the default HttpSource for downloading resources.
         /// </summary>
-        public Fetcher()
+        /// <param name="proxy">(Optional) Proxy used for getting web requests</param>
+        public Fetcher(WebProxy proxy = null)
         {
-            Source = new HttpSource();
+            Source = new HttpSource(proxy);
         }
 
         /// <summary>
