@@ -32,7 +32,7 @@ namespace FaviconFetcher
         /// Creates a HttpSource for accessing the websites
         /// </summary>
         /// <param name="proxy">(Optional) Proxy used for getting web requests</param>
-        public HttpSource(WebProxy proxy)
+        public HttpSource(WebProxy proxy = null)
         {
             RequestsProxy = proxy;
         }
