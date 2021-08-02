@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Cache;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FaviconFetcher
 {
@@ -24,6 +22,20 @@ namespace FaviconFetcher
         /// The HTTP User-agent header sent for web requests.
         /// </summary>
         public string UserAgent = "FaviconFetcher/1.0";
+
+        /// <summary>
+        /// Proxy used for getting web requests
+        /// </summary>
+        public WebProxy RequestsProxy = null;
+
+        /// <summary>
+        /// Creates a HttpSource for accessing the websites
+        /// </summary>
+        /// <param name="proxy">(Optional) Proxy used for getting web requests</param>
+        public HttpSource(WebProxy proxy = null)
+        {
+            RequestsProxy = proxy;
+        }
 
         /// <summary>
         /// Internal use only. Downloads a text resource from a URI.
@@ -131,6 +143,9 @@ namespace FaviconFetcher
             var request = WebRequest.Create(uri) as HttpWebRequest;
             request.CachePolicy = CachePolicy;
             request.UserAgent = UserAgent;
+
+            if (RequestsProxy != null)
+                request.Proxy = RequestsProxy;
 
             // GetResponse returns response in exception if error code...
             // so we need to handle it in a try-catch.

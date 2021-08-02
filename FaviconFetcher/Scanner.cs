@@ -1,12 +1,7 @@
 ﻿using FaviconFetcher.SubScanners;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FaviconFetcher
 {
@@ -20,9 +15,10 @@ namespace FaviconFetcher
         /// <summary>
         /// Constructs a Scanner that uses the default HttpSource for downloading resources.
         /// </summary>
-        public Scanner()
+        /// <param name="proxy">(Optional) Proxy used for getting web requests</param>
+        public Scanner(WebProxy proxy = null)
         {
-            Source = new HttpSource();
+            Source = new HttpSource(proxy);
         }
 
         /// <summary>
