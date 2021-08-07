@@ -5,18 +5,26 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Nathan Belue</Authors>
     <Company></Company>
-    <PackageLicenseUrl>https://github.com/ComputerGhost/FaviconFetcher/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ComputerGhost/FaviconFetcher</PackageProjectUrl>
     <Description>Tools to scan a webpage for possible favicons (Scanner) and download the perfect one (Fetcher).  Resources are prioritized and downloaded on demand, and caching is supported.</Description>
     <PackageTags>favicon, webpage, icon</PackageTags>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Version>1.1.0</Version>
-    <PackageReleaseNotes>- ConcurrentPriorityQueue included in FaviconFetcher instead of requiring a dead repo.
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.2.0</Version>
+    <PackageReleaseNotes>- Added proxy functionality.
 - Dependencies updated.</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

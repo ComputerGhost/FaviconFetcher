@@ -21,7 +21,7 @@ namespace FaviconFetcher
         /// <summary>
         /// The HTTP User-agent header sent for web requests.
         /// </summary>
-        public string UserAgent = "FaviconFetcher/1.0";
+        public string UserAgent = "FaviconFetcher/1.2";
 
         /// <summary>
         /// Proxy used for getting web requests
