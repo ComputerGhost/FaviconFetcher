@@ -58,7 +58,8 @@ namespace FaviconFetcher
             {
                 try
                 {
-                    var encoding = Encoding.GetEncoding(response.CharacterSet);
+                    var charset = response.CharacterSet.Replace("\"", "");
+                    var encoding = Encoding.GetEncoding(charset);
                     return new StreamReader(response.GetResponseStream(), encoding);
                 }
                 catch (NotSupportedException) { }
