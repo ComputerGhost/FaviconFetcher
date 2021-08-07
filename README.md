@@ -87,4 +87,4 @@ Please use the Issues tab on our GitHub page to file bug reports. Or, you may co
 
  * [dshulepov](https://github.com/dshulepov) - Our priority queue code comes from them.  The original uri was <https://github.com/dshulepov/ConcurrentPriorityQueue>.
  * [kurema](https://github.com/kurema) - Updated dependencies.  Pulled in priority queue from other repo to remove requirement for old framework.
-
+ * [florian-berger] (https://github.com/florian-berger) - Added proxy functionality.
