@@ -10,7 +10,7 @@
     <Description>Tools to scan a webpage for possible favicons (Scanner) and download the perfect one (Fetcher).  Resources are prioritized and downloaded on demand, and caching is supported.</Description>
     <PackageTags>favicon, webpage, icon</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <PackageReleaseNotes>- Added proxy functionality.
 - Dependencies updated.</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
