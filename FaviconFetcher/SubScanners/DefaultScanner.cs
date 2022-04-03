@@ -2,13 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 #if DEBUG
 [assembly: InternalsVisibleTo("FaviconFetcher.Tests")]
@@ -197,34 +192,43 @@ namespace FaviconFetcher.SubScanners
 
             parser.SkipWhitespace();
 
-            int quoteChar = -1;
-            if (parser.Peek() == '\'')
-            {
-                quoteChar = '\'';
-                parser.Read();
-            }
-            else if (parser.Peek() == '"')
-            {
-                quoteChar = '"';
-                parser.Read();
-            }
+            int quoteChar = _ReadQuoteChar(parser);
 
             var builder = new StringBuilder();
             while (!parser.EndOfStream)
             {
-                if (parser.Peek() == quoteChar) {
+                if (_IsQuoteChar(parser, quoteChar))
+                {
                     parser.Read();
                     break;
                 }
-                if (quoteChar == -1 && char.IsWhiteSpace((char)parser.Peek()))
-                    break;
-                if (parser.Peek() == quoteChar) {
-                    parser.Read();
-                    break;
-                }
+
                 builder.Append((char)parser.Read());
             }
             return builder.ToString();
+        }
+
+        private int _ReadQuoteChar(TextParser parser)
+        {
+            parser.SkipWhitespace();
+
+            switch (parser.Peek())
+            {
+                case '"': case '\'':
+                    return parser.Read();
+                default:
+                    return -1;
+            }
+        }
+
+        private bool _IsQuoteChar(TextParser parser, int quoteChar)
+        {
+            var nextChar = parser.Peek();
+            return
+                (nextChar == quoteChar) ||
+                (quoteChar == -1 && char.IsWhiteSpace((char)nextChar)) ||
+                (quoteChar == -1 && nextChar == '>')
+            ;
         }
 
     }
