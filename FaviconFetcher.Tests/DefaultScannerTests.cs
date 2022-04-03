@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using FaviconFetcher.SubScanners;
 using FaviconFetcher.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -286,6 +285,111 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
+        public void Results_BaseAfterLocation_ModifiesPreviousLocation()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <link rel=icon href='favicon.ico'>
+                    <base href='http://www.other.com'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual(new ScanResult
+            {
+                Location = new Uri("http://www.other.com/favicon.ico"),
+                ExpectedSize = new Size(16, 16)
+            }, scanner.Results[0]);
+        }
+
+        [TestMethod]
+        public void Results_AbsoluteBase_PrefixesToLocations()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <base href='http://www.other.com'>
+                    <link rel=icon href='favicon.ico'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual(new ScanResult
+            {
+                Location = new Uri("http://www.other.com/favicon.ico"),
+                ExpectedSize = new Size(16, 16)
+            }, scanner.Results[0]);
+        }
+
+        [TestMethod]
+        public void Results_RelativeBase_PrefixesTargetAndBaseToLocations()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <base href='icons/'>
+                    <link rel=icon href='favicon.ico'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual(new ScanResult
+            {
+                Location = new Uri("http://www.example.com/icons/favicon.ico"),
+                ExpectedSize = new Size(16, 16)
+            }, scanner.Results[0]);
+        }
+
+        [TestMethod]
+        public void Results_EmptyBase_IgnoresIt()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <base href=''>
+                    <link rel=icon href='favicon.ico'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual(new ScanResult
+            {
+                Location = new Uri("http://www.example.com/favicon.ico"),
+                ExpectedSize = new Size(16, 16)
+            }, scanner.Results[0]);
+        }
+
+        [TestMethod]
+        public void Results_InvalidBase_IgnoresIt()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <base href='..'>
+                    <link rel=icon href='favicon.ico'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual(new ScanResult
+            {
+                Location = new Uri("http://www.example.com/favicon.ico"),
+                ExpectedSize = new Size(16, 16)
+            }, scanner.Results[0]);
+        }
+
+        [TestMethod]
         public void SuggestedScanners_NoLinks_SuggestFaviconIco()
         {
             var uri = new Uri("http://www.example.com");
@@ -484,6 +588,91 @@ namespace FaviconFetcher.Tests
 
             Assert.AreEqual(1, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count); // just FaviconIcoScanner
+        }
+
+        [TestMethod]
+        public void SuggestedScanner_BaseAfterLocation_ModifiesPreviousLocation()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <meta name='msapplication-config' content='browserconfig.xml'>
+                    <base href='http://www.other.com'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual("http://www.other.com/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
+        }
+
+        [TestMethod]
+        public void SuggestedScanner_AbsoluteBase_PrefixesToLocations()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <base href='http://www.other.com'>
+                    <meta name='msapplication-config' content='browserconfig.xml'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual("http://www.other.com/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
+        }
+
+        [TestMethod]
+        public void SuggestedScanner_RelativeBase_PrefixesTargetAndBaseToLocations()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <base href='sub/'>
+                    <meta name='msapplication-config' content='browserconfig.xml'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual("http://www.example.com/sub/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
+        }
+
+        [TestMethod]
+        public void SuggestedScanner_EmptyBase_IgnoresIt()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <base href=''>
+                    <meta name='msapplication-config' content='browserconfig.xml'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual("http://www.example.com/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
+        }
+
+        [TestMethod]
+        public void SuggestedScanner_InvalidBase_IgnoresIt()
+        {
+            var uri = new Uri("http://www.example.com");
+            var source = new MockSource();
+            source.AddTextResource(uri, @"
+                <html><head>
+                    <base href='..'>
+                    <meta name='msapplication-config' content='browserconfig.xml'>
+                </head></html>");
+
+            var scanner = new DefaultScanner(source, uri);
+            scanner.Start();
+
+            Assert.AreEqual("http://www.example.com/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
         }
     }
 }

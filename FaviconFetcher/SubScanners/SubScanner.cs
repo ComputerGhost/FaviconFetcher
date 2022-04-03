@@ -1,13 +1,5 @@
-﻿using FaviconFetcher.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FaviconFetcher.SubScanners
 {
@@ -15,7 +7,7 @@ namespace FaviconFetcher.SubScanners
     abstract class SubScanner
     {
         // URI to scan.
-        public Uri TargetUri { get; private set; }
+        public Uri TargetUri { get; internal set; }
 
         // What to use to download it
         public ISource Source { get; private set; }

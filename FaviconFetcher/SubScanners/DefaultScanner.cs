@@ -12,6 +12,8 @@ namespace FaviconFetcher.SubScanners
 {
     class DefaultScanner : SubScanner
     {
+        private Uri _baseUri;
+
         public DefaultScanner(ISource source, Uri uri) : base(source, uri)
         {
         }
@@ -29,6 +31,30 @@ namespace FaviconFetcher.SubScanners
         }
 
 
+        private void _AddResult(Size expectedSize, string href)
+        {
+            try
+            {
+                Results.Add(new ScanResult
+                {
+                    ExpectedSize = expectedSize,
+                    Location = _GetAbsoluteLocationUri(href)
+                });
+            }
+            catch (UriFormatException) { }
+        }
+
+        private Uri _GetAbsoluteLocationUri(string href)
+        {
+            if (_baseUri == null)
+                return new Uri(TargetUri, href);
+            else if (_baseUri.IsAbsoluteUri)
+                return new Uri(_baseUri, href);
+            else
+                return new Uri(new Uri(TargetUri, _baseUri), href);
+        }
+
+
         private void _ParsePage(TextParser parser)
         {
             parser.CaseInsensitiveSkipUntil("<html");
@@ -37,12 +63,42 @@ namespace FaviconFetcher.SubScanners
 
             while (!parser.EndOfStream)
             {
-                switch (parser.CaseInsensitiveSkipUntil("</head", "<link", "<meta"))
+                switch (parser.CaseInsensitiveSkipUntil("</head", "<base", "<link", "<meta"))
                 {
+                    case "<base": _ParseBase(parser); break;
                     case "<link": _ParseLink(parser); break;
                     case "<meta": _ParseMeta(parser); break;
                     default: return;
                 }
+            }
+        }
+
+        private void _ParseBase(TextParser parser)
+        {
+            // We need the base href value, which modifies all our urls
+            var attributes = _ParseAttributes(parser);
+            if (attributes.TryGetValue("href", out var href))
+            {
+                if (Uri.TryCreate(href, UriKind.RelativeOrAbsolute, out var baseUri))
+                    _baseUri = baseUri;
+            }
+
+            // Fix existing urls
+            for (var i = 0; i != Results.Count; i++)
+            {
+                var result = Results[i];
+                var relativeUri = result.Location.ToString().Substring(TargetUri.ToString().Length);
+                result.Location = _GetAbsoluteLocationUri(relativeUri);
+                Results[i] = result;
+            }
+
+            // Fix existing scanner targets
+            for (var i = 0; i != SuggestedScanners.Count; i++)
+            {
+                var scanner = SuggestedScanners[i];
+                var relativeUri = scanner.TargetUri.ToString().Substring(TargetUri.ToString().Length);
+                scanner.TargetUri = _GetAbsoluteLocationUri(relativeUri);
+                SuggestedScanners[i] = scanner;
             }
         }
 
@@ -109,15 +165,7 @@ namespace FaviconFetcher.SubScanners
             // Now we can finally add the favicons, one instance for each size
             foreach (var size in sizes)
             {
-                try
-                {
-                    Results.Add(new ScanResult
-                    {
-                        ExpectedSize = size,
-                        Location = new Uri(TargetUri, href)
-                    });
-                }
-                catch (UriFormatException) { }
+                _AddResult(size, href);
             }
         }
 
@@ -132,7 +180,7 @@ namespace FaviconFetcher.SubScanners
                     return;
                 try
                 {
-                    var uri = new Uri(TargetUri, attributes["href"]);
+                    var uri = _GetAbsoluteLocationUri(attributes["href"]);
                     SuggestedScanners.Add(new ManifestJsonScanner(Source, uri));
                 }
                 catch (UriFormatException) { }
@@ -145,7 +193,7 @@ namespace FaviconFetcher.SubScanners
                     return;
                 try
                 {
-                    var uri = new Uri(TargetUri, attributes["content"]);
+                    var uri = _GetAbsoluteLocationUri(attributes["content"]);
                     SuggestedScanners.Add(new BrowserconfigXmlScanner(Source, uri));
                 }
                 catch (UriFormatException) { }
