@@ -1,7 +1,6 @@
 ﻿using FaviconFetcher.Utility;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -31,7 +30,7 @@ namespace FaviconFetcher.SubScanners
         }
 
 
-        private void _AddResult(Size expectedSize, string href)
+        private void _AddResult(IconSize expectedSize, string href)
         {
             try
             {
@@ -119,7 +118,7 @@ namespace FaviconFetcher.SubScanners
                 return;
 
             // Get the sizes specified
-            var sizes = new List<Size>();
+            var sizes = new List<IconSize>();
             if (attributes.ContainsKey("sizes"))
             {
                 foreach (var size in attributes["sizes"].Split(' '))
@@ -133,14 +132,14 @@ namespace FaviconFetcher.SubScanners
                     if (!int.TryParse(parts[1], out int height))
                         continue;
 
-                    sizes.Add(new Size(width, height));
+                    sizes.Add(new IconSize(width, height));
                 }
             }
 
             // If no valid sizes, try some deduction...
             if (sizes.Count == 0) {
                 if (rel.Contains("apple"))
-                    sizes.Add(new Size(57, 57));
+                    sizes.Add(new IconSize(57, 57));
                 else
                 {
                     int finalSize = 0, currentSize = 0;
@@ -154,13 +153,13 @@ namespace FaviconFetcher.SubScanners
                             finalSize = currentSize;
                     }
                     if (finalSize > 0)
-                        sizes.Add(new Size(finalSize, finalSize));
+                        sizes.Add(new IconSize(finalSize, finalSize));
                 }
             }
 
             // If still no valid size, just use a default 16x16.
             if (sizes.Count == 0)
-                sizes.Add(new Size(16, 16));
+                sizes.Add(new IconSize(16, 16));
 
             // Now we can finally add the favicons, one instance for each size
             foreach (var size in sizes)

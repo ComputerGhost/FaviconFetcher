@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ namespace FaviconFetcher.Tests.Utility
     class MockSource : ISource, IDisposable
     {
         private Dictionary<Uri, string> _textResourceMap = new Dictionary<Uri, string>();
-        private Dictionary<Uri, List<Image>> _imageResourceMap = new Dictionary<Uri, List<Image>>();
+        private Dictionary<Uri, List<IconImage>> _imageResourceMap = new Dictionary<Uri, List<IconImage>>();
 
         public int RequestCount { get; private set; } = 0;
 
@@ -29,27 +29,27 @@ namespace FaviconFetcher.Tests.Utility
             _textResourceMap.Add(uri, contents);
         }
 
-        public void AddImageResource(Uri uri, Size imageSize)
+        public void AddImageResource(Uri uri, IconSize imageSize)
         {
-            using (var bitmap = new Bitmap(1, 1))
+            using (var bitmap = new SKBitmap(1, 1))
             {
-                bitmap.SetPixel(0, 0, Color.DarkSlateBlue);
-                AddImageResource(uri, new Bitmap(bitmap, imageSize));
+                bitmap.SetPixel(0, 0, SKColor.FromHsl(255, 255, 255));
+                AddImageResource(uri, IconImage.FromSKBitmap(bitmap, new IconSize(imageSize.Width, imageSize.Height)));
             }
         }
 
-        public void AddImageResource(Uri uri, Image image)
+        public void AddImageResource(Uri uri, IconImage image)
         {
             if (!_imageResourceMap.ContainsKey(uri))
-                _imageResourceMap.Add(uri, new List<Image>());
+                _imageResourceMap.Add(uri, new List<IconImage>());
             _imageResourceMap[uri].Add(image);
         }
 
-        public IEnumerable<Image> DownloadImages(Uri uri)
+        public IEnumerable<IconImage> DownloadImages(Uri uri)
         {
             ++RequestCount;
             if (!_imageResourceMap.ContainsKey(uri))
-                return new Image[] { };
+                return new IconImage[] { };
             return _imageResourceMap[uri];
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using FaviconFetcher.SubScanners;
 using FaviconFetcher.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,7 +24,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon.png"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -45,7 +44,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon.png"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -65,7 +64,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon.png"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -101,12 +100,12 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicons.ico"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicons.ico"),
-                ExpectedSize = new Size(32, 32)
+                ExpectedSize = new IconSize(32, 32)
             }, scanner.Results[1]);
         }
 
@@ -143,7 +142,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/apple_icon.png"),
-                ExpectedSize = new Size(57, 57)
+                ExpectedSize = new IconSize(57, 57)
             }, scanner.Results[0]);
         }
 
@@ -163,7 +162,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/apple_icon.png"),
-                ExpectedSize = new Size(48, 48)
+                ExpectedSize = new IconSize(48, 48)
             }, scanner.Results[0]);
         }
 
@@ -183,7 +182,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon_48x48.png"),
-                ExpectedSize = new Size(48, 48)
+                ExpectedSize = new IconSize(48, 48)
             }, scanner.Results[0]);
         }
 
@@ -203,7 +202,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon_48x48.png"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -223,7 +222,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/icon_21474836470_48.png"),
-                ExpectedSize = new Size(48, 48)
+                ExpectedSize = new IconSize(48, 48)
             }, scanner.Results[0]);
         }
 
@@ -259,7 +258,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon's.png"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -280,7 +279,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon.ico"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -301,7 +300,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.other.com/favicon.ico"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -322,7 +321,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.other.com/favicon.ico"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -343,7 +342,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/icons/favicon.ico"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -364,7 +363,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon.ico"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 
@@ -385,7 +384,7 @@ namespace FaviconFetcher.Tests
             Assert.AreEqual(new ScanResult
             {
                 Location = new Uri("http://www.example.com/favicon.ico"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             }, scanner.Results[0]);
         }
 

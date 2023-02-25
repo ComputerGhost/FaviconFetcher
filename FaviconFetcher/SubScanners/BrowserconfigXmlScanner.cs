@@ -1,7 +1,6 @@
 ﻿using FaviconFetcher.Utility;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -71,16 +70,16 @@ namespace FaviconFetcher.SubScanners
                 switch (found)
                 {
                     case "<square70x70logo":
-                        _AddResult(attributes["src"], new Size(70, 70));
+                        _AddResult(attributes["src"], new IconSize(70, 70));
                         break;
                     case "<square150x150logo":
-                        _AddResult(attributes["src"], new Size(150, 150));
+                        _AddResult(attributes["src"], new IconSize(150, 150));
                         break;
                     case "<wide310x150logo":
-                        _AddResult(attributes["src"], new Size(310, 150));
+                        _AddResult(attributes["src"], new IconSize(310, 150));
                         break;
                     case "<square310x310logo":
-                        _AddResult(attributes["src"], new Size(310, 310));
+                        _AddResult(attributes["src"], new IconSize(310, 310));
                         break;
                 }
             }
@@ -156,7 +155,7 @@ namespace FaviconFetcher.SubScanners
             return builder.ToString();
         }
 
-        private void _AddResult(string uri, Size size)
+        private void _AddResult(string uri, IconSize size)
         {
             try {
                 Results.Add(new ScanResult

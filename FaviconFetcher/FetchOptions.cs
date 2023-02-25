@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,17 +14,17 @@ namespace FaviconFetcher
         /// <summary>
         /// The result will be at least this size.
         /// </summary>
-        public Size MinimumSize { get; set; } = Size.Empty;
+        public IconSize MinimumSize { get; set; } = IconSize.Empty;
 
         /// <summary>
         /// The result will not exceed this size.
         /// </summary>
-        public Size MaximumSize { get; set; } = new Size(4096, 4096);
+        public IconSize MaximumSize { get; set; } = new IconSize(4096, 4096);
 
         /// <summary>
         /// The result will be the closest to this size.
         /// </summary>
-        public Size PerfectSize { get; set; } = Size.Empty;
+        public IconSize PerfectSize { get; set; } = IconSize.Empty;
 
         /// <summary>
         /// Whether to require that the favicon be a square.

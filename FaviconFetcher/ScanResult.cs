@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +19,6 @@ namespace FaviconFetcher
         /// <summary>
         /// Expected size of the favicon.
         /// </summary>
-        public Size ExpectedSize { get; set; }
+        public IconSize ExpectedSize { get; set; }
     }
 }

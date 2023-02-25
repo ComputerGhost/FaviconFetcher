@@ -1,4 +1,5 @@
 ﻿using FaviconFetcher;
+using SkiaSharp.Views.Desktop;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,14 +33,14 @@ namespace Example
 
                 var image = new Fetcher().Fetch(uri, new FetchOptions
                 {
-                    MinimumSize = new Size(minSize, minSize),
-                    MaximumSize = new Size(maxSize, maxSize),
-                    PerfectSize = new Size(perfectSize, perfectSize)
+                    MinimumSize = new IconSize(minSize, minSize),
+                    MaximumSize = new IconSize(maxSize, maxSize),
+                    PerfectSize = new IconSize(perfectSize, perfectSize)
                 });
                 if (image != null)
                 {
-                    picIcon.Size = image.Size;
-                    picIcon.Image = image;
+                    picIcon.Size = new Size(image.Size.Width, image.Size.Height);
+                    picIcon.Image = image.ToSKBitmap().ToBitmap();
                 }
             }
             catch (Exception ex)

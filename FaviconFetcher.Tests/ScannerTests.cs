@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using FaviconFetcher.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
