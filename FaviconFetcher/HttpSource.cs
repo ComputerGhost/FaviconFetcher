@@ -19,9 +19,11 @@ namespace FaviconFetcher
         public RequestCachePolicy CachePolicy = WebRequest.DefaultCachePolicy;
 
         /// <summary>
-        /// The HTTP User-agent header sent for web requests.
+        /// The HTTP User-agent header sent for web requests.  The "e" is in
+        /// "fetch" is swapped out with the number "3" here because a number
+        /// of sites block requests with "fetch" in the userAgent.
         /// </summary>
-        public string UserAgent = "FaviconFetcher/1.2";
+        public string UserAgent = "FaviconF3tcher/1.2";
 
         /// <summary>
         /// Proxy used for getting web requests
