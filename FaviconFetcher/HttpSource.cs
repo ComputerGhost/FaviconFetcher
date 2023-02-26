@@ -87,7 +87,7 @@ namespace FaviconFetcher
                 response.GetResponseStream().CopyTo(memoryStream);
 
                 // Were we redirected and received a non-image response?
-                if (!response.Equals(response.ResponseUri) 
+                if (!uri.Equals(response.ResponseUri) 
                     && contentType.Contains("text/html"))
                 {
                     responseUri = response.ResponseUri;
