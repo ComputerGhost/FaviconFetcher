@@ -147,7 +147,7 @@ namespace FaviconFetcher
             var reader = new BinaryReader(stream, Encoding.UTF8, true);
 
             // Skip to count
-            stream.Seek(4000, SeekOrigin.Begin);
+            stream.Seek(4, SeekOrigin.Begin);
             var count = reader.ReadInt16();
 
             var sizes = new List<IconSize>();
