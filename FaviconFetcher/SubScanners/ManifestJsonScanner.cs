@@ -1,7 +1,6 @@
 ﻿using FaviconFetcher.Utility;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -76,7 +75,7 @@ namespace FaviconFetcher.SubScanners
                 {
                     Results.Add(new ScanResult
                     {
-                        ExpectedSize = new Size(width, height),
+                        ExpectedSize = new IconSize(width, height),
                         Location = new Uri(TargetUri, icon.src)
                     });
                 }

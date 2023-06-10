@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
@@ -74,50 +73,76 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The URI of the image file to download.</param>
         /// <returns>All of the images found within the file.</returns>
-        public IEnumerable<Image> DownloadImages(Uri uri)
+        public IEnumerable<IconImage> DownloadImages(Uri uri)
         {
-            var images = new List<Image>();
+            var images = new List<IconImage>();
+            var contentType = string.Empty;
+            var memoryStream = new MemoryStream();
+            Uri responseUri = null;
+
             using (var response = _GetWebResponse(uri))
             {
                 if (response.StatusCode != HttpStatusCode.OK)
                     return images;
 
-                var memoryStream = new MemoryStream();
+                contentType = response.ContentType.ToLower();
                 response.GetResponseStream().CopyTo(memoryStream);
 
-                // Ico file
-                if (_IsContentTypeIco(response.ContentType))
+                // Were we redirected and received a non-image response?
+                if (!uri.Equals(response.ResponseUri) 
+                    && contentType.Contains("text/html"))
                 {
-                    try
-                    {
-                        foreach (var size in _ExtractIcoSizes(memoryStream))
-                        {
-                            memoryStream.Position = 0;
-                            images.Add(new Icon(memoryStream, size).ToBitmap());
-                        }
-                        return images;
-                    }
-
-                    // Sometimes a website lies about "ico".
-                    catch (EndOfStreamException) { }
-                    catch (ArgumentException) { }
-                    // We'll let this fall through to try another image type.
-                    memoryStream.Position = 0;
+                    responseUri = response.ResponseUri;
                 }
+            }
 
-                // Other image type
+            if (responseUri != null)
+            {
+                var redirectedUri = new Uri(responseUri.GetLeftPart(UriPartial.Authority).ToString() + uri.PathAndQuery);
+                // Try fetching same resource at the root of the redirected URI
+                using (var response = _GetWebResponse(redirectedUri))
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        return images;
+
+                    contentType = response.ContentType;
+                    memoryStream = new MemoryStream();
+                    response.GetResponseStream().CopyTo(memoryStream);
+                }
+            }
+
+            // Ico file
+            if (_IsContentTypeIco(contentType))
+            {
                 try
                 {
-                    images.Add(Image.FromStream(memoryStream));
+                    foreach (var size in _ExtractIcoSizes(memoryStream))
+                    {
+                        memoryStream.Position = 0;
+                        images.Add(IconImage.FromIco(memoryStream, size));
+                    }
+                    return images;
                 }
-                catch (ArgumentException) {}
+
+                // Sometimes a website lies about "ico".
+                catch (EndOfStreamException) { }
+                catch (ArgumentException) { }
+                // We'll let this fall through to try another image type.
+                memoryStream.Position = 0;
             }
+
+            // Other image type
+            try
+            {
+                images.Add(IconImage.FromStream(memoryStream));
+            }
+            catch (ArgumentException) {}
             return images;
         }
 
 
         // Extract image sizes from ICO file
-        private IEnumerable<Size> _ExtractIcoSizes(Stream stream)
+        private IEnumerable<IconSize> _ExtractIcoSizes(Stream stream)
         {
             var reader = new BinaryReader(stream, Encoding.UTF8, true);
 
@@ -125,7 +150,7 @@ namespace FaviconFetcher
             stream.Seek(4000, SeekOrigin.Begin);
             var count = reader.ReadInt16();
 
-            var sizes = new List<Size>();
+            var sizes = new List<IconSize>();
             for (var i = 0; i != count; ++i)
             {
                 var offset = 6 + i * 16;
@@ -134,7 +159,7 @@ namespace FaviconFetcher
                 if (width == 0) width = 256;
                 int height = reader.ReadByte();
                 if (height == 0) height = 256;
-                sizes.Add(new Size(width, height));
+                sizes.Add(new IconSize(width, height));
             }
 
             return sizes;

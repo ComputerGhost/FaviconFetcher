@@ -1,6 +1,5 @@
 ﻿using FaviconFetcher.Utility;
 using System;
-using System.Drawing;
 using System.Net;
 
 namespace FaviconFetcher
@@ -36,7 +35,7 @@ namespace FaviconFetcher
         /// <param name="uri">The webpage to scan for favicons.</param>
         /// <param name="size">The target size of the favicon.</param>
         /// <returns>The closest favicon to the size, or null.</returns>
-        public Image FetchClosest(Uri uri, Size size)
+        public IconImage FetchClosest(Uri uri, IconSize size)
         {
             return Fetch(uri, new FetchOptions
             {
@@ -50,7 +49,7 @@ namespace FaviconFetcher
         /// <param name="uri">The webpage to scan for favicons.</param>
         /// <param name="size">The target size of the favicon.</param>
         /// <returns>The favicon matching the size, or null.</returns>
-        public Image FetchExact(Uri uri, Size size)
+        public IconImage FetchExact(Uri uri, IconSize size)
         {
             return Fetch(uri, new FetchOptions
             {
@@ -66,7 +65,7 @@ namespace FaviconFetcher
         /// <param name="uri">The webpage to scan for favicons.</param>
         /// <param name="options">Filters for the returned result.</param>
         /// <returns>The matching favicon, or null.</returns>
-        public Image Fetch(Uri uri, FetchOptions options)
+        public IconImage Fetch(Uri uri, FetchOptions options)
         {
             using (var fetch = new FetchJob(Source, uri, options))
                 return fetch.ScanAndFetch();

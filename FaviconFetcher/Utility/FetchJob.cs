@@ -1,7 +1,6 @@
 ﻿using ConcurrentPriorityQueue;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +20,7 @@ namespace FaviconFetcher.Utility
         // Options for the fetch
         FetchOptions Options;
 
-        ConcurrentPriorityQueue<Image, double> downloadedImages = new ConcurrentPriorityQueue<Image, double>();
+        ConcurrentPriorityQueue<IconImage, double> downloadedImages = new ConcurrentPriorityQueue<IconImage, double>();
         ConcurrentPriorityQueue<ScanResult, double> notVerified = new ConcurrentPriorityQueue<ScanResult, double>();
 
         public FetchJob(ISource source, Uri uri, FetchOptions options)
@@ -38,7 +37,7 @@ namespace FaviconFetcher.Utility
         }
 
         // Scan and fetches best icon per Options.
-        public Image ScanAndFetch()
+        public IconImage ScanAndFetch()
         {
             var parsedUris = new HashSet<Uri>();
             foreach (var possibleIcon in new Scanner(Source).Scan(TargetUri))
@@ -79,7 +78,7 @@ namespace FaviconFetcher.Utility
 
 
         // Downloads images. If perfect found, returns it.
-        private Image DownloadImages_ReturnPerfect(Uri uri)
+        private IconImage DownloadImages_ReturnPerfect(Uri uri)
         {
             foreach (var image in Source.DownloadImages(uri))
             {
@@ -96,7 +95,7 @@ namespace FaviconFetcher.Utility
         }
 
         // Gets the distance between a size and the perfect size
-        private double _GetDistance(Size size)
+        private double _GetDistance(IconSize size)
         {
             // Considering the sizes as points, we can find the distance 
             // between them by using the Pythagorean Theorem.
@@ -106,7 +105,7 @@ namespace FaviconFetcher.Utility
         }
 
         // Is a size within the min/max range?
-        private bool _IsInRange(Size size)
+        private bool _IsInRange(IconSize size)
         {
             if (Options.RequireSquare && size.Width != size.Height)
                 return false;
@@ -122,9 +121,9 @@ namespace FaviconFetcher.Utility
         }
 
         // Is a size a perfect match?
-        private bool _IsPerfect(Size size)
+        private bool _IsPerfect(IconSize size)
         {
-            if (Options.PerfectSize == Size.Empty)
+            if (Options.PerfectSize == IconSize.Empty)
                 return false;
             return size == Options.PerfectSize;
         }

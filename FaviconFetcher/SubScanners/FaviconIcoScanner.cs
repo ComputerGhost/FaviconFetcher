@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -25,7 +24,7 @@ namespace FaviconFetcher.SubScanners
             Results.Add(new ScanResult
             {
                 Location = new Uri(TargetUri, "/favicon.ico"),
-                ExpectedSize = new Size(16, 16)
+                ExpectedSize = new IconSize(16, 16)
             });
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,6 +27,6 @@ namespace FaviconFetcher
         /// </remarks>
         /// <param name="uri">The URI of the image file to download.</param>
         /// <returns>All of the images found within the file, or an empty list.</returns>
-        IEnumerable<Image> DownloadImages(Uri uri);
+        IEnumerable<IconImage> DownloadImages(Uri uri);
     }
 }
