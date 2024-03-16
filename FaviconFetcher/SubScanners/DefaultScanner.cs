@@ -62,7 +62,7 @@ namespace FaviconFetcher.SubScanners
 
             while (!parser.EndOfStream)
             {
-                switch (parser.CaseInsensitiveSkipUntil("</head", "<base", "<link", "<meta"))
+                switch (parser.CaseInsensitiveSkipUntil("<base", "<link", "<meta", "</body"))
                 {
                     case "<base": _ParseBase(parser); break;
                     case "<link": _ParseLink(parser); break;
