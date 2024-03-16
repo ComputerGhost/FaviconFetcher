@@ -22,9 +22,9 @@ namespace FaviconFetcher.SubScanners
         {
         }
 
-        public override void Start()
+        public async override Task Start()
         {
-            using (var reader = Source.DownloadText(TargetUri))
+            using (var reader = await Source.DownloadText(TargetUri))
             {
                 if (reader != null)
                     _ParseContent(new TextParser(reader));

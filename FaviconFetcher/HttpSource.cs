@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Cache;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FaviconFetcher
 {
@@ -43,9 +44,9 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The uri of the resource to download.</param>
         /// <returns>A reader for the resource, or null.</returns>
-        public StreamReader DownloadText(Uri uri)
+        public async Task<StreamReader> DownloadText(Uri uri)
         {
-            var response = _GetWebResponse(uri);
+            var response = await _GetWebResponse(uri);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 response.Dispose(); // since we won't be passing on the response stream.
@@ -73,14 +74,14 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The URI of the image file to download.</param>
         /// <returns>All of the images found within the file.</returns>
-        public IEnumerable<IconImage> DownloadImages(Uri uri)
+        public async Task<IEnumerable<IconImage>> DownloadImages(Uri uri)
         {
             var images = new List<IconImage>();
             var contentType = string.Empty;
             var memoryStream = new MemoryStream();
             Uri responseUri = null;
 
-            using (var response = _GetWebResponse(uri))
+            using (var response = await _GetWebResponse(uri))
             {
                 if (response.StatusCode != HttpStatusCode.OK)
                     return images;
@@ -100,7 +101,7 @@ namespace FaviconFetcher
             {
                 var redirectedUri = new Uri(responseUri.GetLeftPart(UriPartial.Authority).ToString() + uri.PathAndQuery);
                 // Try fetching same resource at the root of the redirected URI
-                using (var response = _GetWebResponse(redirectedUri))
+                using (var response = await _GetWebResponse(redirectedUri))
                 {
                     if (response.StatusCode != HttpStatusCode.OK)
                         return images;
@@ -166,7 +167,7 @@ namespace FaviconFetcher
         }
         
         // Setup and make a web request, returning the response.
-        private HttpWebResponse _GetWebResponse(Uri uri)
+        private async Task<HttpWebResponse> _GetWebResponse(Uri uri)
         {
             var request = WebRequest.Create(uri) as HttpWebRequest;
             request.CachePolicy = CachePolicy;

@@ -45,15 +45,15 @@ namespace FaviconFetcher.Tests.Utility
             _imageResourceMap[uri].Add(image);
         }
 
-        public IEnumerable<IconImage> DownloadImages(Uri uri)
+        public Task<IEnumerable<IconImage>> DownloadImages(Uri uri)
         {
             ++RequestCount;
             if (!_imageResourceMap.ContainsKey(uri))
-                return new IconImage[] { };
-            return _imageResourceMap[uri];
+                return Task.FromResult(new IconImage[] { } as System.Collections.Generic.IEnumerable<IconImage>);
+            return Task.FromResult(_imageResourceMap[uri] as System.Collections.Generic.IEnumerable<IconImage>);
         }
 
-        public StreamReader DownloadText(Uri uri)
+        public Task<StreamReader> DownloadText(Uri uri)
         {
             ++RequestCount;
             if (!_textResourceMap.ContainsKey(uri))
@@ -65,7 +65,7 @@ namespace FaviconFetcher.Tests.Utility
             writer.Write(contents);
             writer.Flush();
             memoryStream.Position = 0;
-            return new StreamReader(memoryStream);
+            return Task.FromResult(new StreamReader(memoryStream));
         }
 
     }

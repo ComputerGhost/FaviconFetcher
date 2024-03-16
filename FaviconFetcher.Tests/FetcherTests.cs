@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FaviconFetcher.Tests.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -56,7 +57,7 @@ namespace FaviconFetcher.Tests
         }
 
         [TestMethod]
-        public void Fetcher_MultipleIconsInFile_UseBest()
+        public async Task Fetcher_MultipleIconsInFile_UseBest()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -66,7 +67,7 @@ namespace FaviconFetcher.Tests
             source.AddImageResource(new Uri(uri, "/favicon.ico"), new IconSize(48, 48));
 
             var fetcher = new Fetcher(source);
-            var image = fetcher.FetchClosest(uri, new IconSize(32, 32));
+            var image = await fetcher.FetchClosest(uri, new IconSize(32, 32));
 
             Assert.AreEqual(2, source.RequestCount);
             Assert.AreEqual(new IconSize(32, 32), image.Size);

@@ -19,13 +19,15 @@ namespace FaviconFetcher.SubScanners
         {
         }
 
-        public override void Start()
+        public override Task Start()
         {
             Results.Add(new ScanResult
             {
                 Location = new Uri(TargetUri, "/favicon.ico"),
                 ExpectedSize = new IconSize(16, 16)
             });
+
+            return Task.CompletedTask;
         }
 
     }

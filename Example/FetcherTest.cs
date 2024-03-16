@@ -19,7 +19,7 @@ namespace Example
             InitializeComponent();
         }
 
-        private void btnFetch_Click(object sender, EventArgs e)
+        private async void btnFetch_Click(object sender, EventArgs e)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace Example
                 picIcon.Size = new Size(16, 16);
                 picIcon.Image = null;
 
-                var image = new Fetcher().Fetch(uri, new FetchOptions
+                var image = await new Fetcher().Fetch(uri, new FetchOptions
                 {
                     MinimumSize = new IconSize(minSize, minSize),
                     MaximumSize = new IconSize(maxSize, maxSize),

@@ -17,7 +17,7 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The URI of the resource to download.</param>
         /// <returns>A reader for the resource, or null.</returns>
-        StreamReader DownloadText(Uri uri);
+        Task<StreamReader> DownloadText(Uri uri);
 
         /// <summary>
         /// Downloads all images from a URI.
@@ -27,6 +27,6 @@ namespace FaviconFetcher
         /// </remarks>
         /// <param name="uri">The URI of the image file to download.</param>
         /// <returns>All of the images found within the file, or an empty list.</returns>
-        IEnumerable<IconImage> DownloadImages(Uri uri);
+        Task<IEnumerable<IconImage>> DownloadImages(Uri uri);
     }
 }

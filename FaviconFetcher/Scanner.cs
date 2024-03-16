@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace FaviconFetcher
 {
@@ -45,10 +46,13 @@ namespace FaviconFetcher
             while (scans.Count > 0 && max_scans-- > 0)
             {
                 var scan = scans.Dequeue();
-                scan.Start();
+
+                // Yielding a Task type requires Net8, so work-around
+                var task = Task.Run(async () => await scan.Start());
+                task.Wait();
 
                 // Go through found favicon references
-                foreach (var result in scan.Results)
+                foreach (ScanResult result in scan.Results)
                     yield return result;
 
                 // Add all subscanners that are suggested

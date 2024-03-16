@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FaviconFetcher.SubScanners
 {
@@ -26,7 +27,7 @@ namespace FaviconFetcher.SubScanners
         }
 
         // Start the scan for favicons.
-        public abstract void Start();
+        public abstract Task Start();
 
     }
 }
