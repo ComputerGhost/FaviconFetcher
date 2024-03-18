@@ -83,19 +83,36 @@ namespace FaviconFetcher
             }
         }
 
-        public bool Save(string filename)
+        /// <summary>
+        /// Saves IconImage to disk.  If a size is specified, proportionally scales the output image.
+        /// </summary>
+        /// <param name="filename">The full path and filename to write the IconImage to.</param>
+        /// <param name="outputSize">The length in pixels to scale the longest dimension of the image to.  
+        /// The shorter side will be calculated proportially.  Specifiy 0 for no scale, which will
+        /// write the IconImage to disk at its original size.</param>
+        /// <returns></returns>
+        public bool Save(string filename, IconSize outputSize = null)
         {
             try
             {
                 using (FileStream fs = File.Create(filename))
                 {
+                    if (outputSize != null)
+                    {
+                        var scaleFactor = Math.Min((double)outputSize.Width / _bitmap.Width, (double)outputSize.Height / _bitmap.Height);
+                        var width = (int)(_bitmap.Width * scaleFactor);
+                        var height = (int)(_bitmap.Height * scaleFactor);
+
+                        _bitmap = _bitmap.Resize(new SKImageInfo(width, height), SKFilterQuality.High);
+                    }
+
                     SKData d = SKImage.FromBitmap(_bitmap).Encode(SKEncodedImageFormat.Png, 100);
                     d.SaveTo(fs);
                 }
 
                 return File.Exists(filename);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
