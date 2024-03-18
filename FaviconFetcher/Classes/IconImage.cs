@@ -84,12 +84,12 @@ namespace FaviconFetcher
         }
 
         /// <summary>
-        /// Saves IconImage to disk.  If a size is specified, proportionally scales the output image.
+        /// Saves IconImage to disk.  If a size is specified, proportionally scales the output image up or down to fit.
         /// </summary>
         /// <param name="filename">The full path and filename to write the IconImage to.</param>
-        /// <param name="outputSize">The length in pixels to scale the longest dimension of the image to.  
-        /// The shorter side will be calculated proportially.  Specifiy 0 for no scale, which will
-        /// write the IconImage to disk at its original size.</param>
+        /// <param name="outputSize">An IconSize object specifying the size that the scaled icon
+        /// should fit within proportionally.  Specifiy null for no scaling, which will write 
+        /// the IconImage to disk at its original size.</param>
         /// <returns></returns>
         public bool Save(string filename, IconSize outputSize = null)
         {
