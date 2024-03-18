@@ -97,7 +97,7 @@ namespace FaviconFetcher
             {
                 using (FileStream fs = File.Create(filename))
                 {
-                    if (outputSize != null)
+                    if (outputSize != null && (_bitmap.Width != outputSize.Width || _bitmap.Height!= outputSize.Height))
                     {
                         var scaleFactor = Math.Min((double)outputSize.Width / _bitmap.Width, (double)outputSize.Height / _bitmap.Height);
                         var width = (int)(_bitmap.Width * scaleFactor);
