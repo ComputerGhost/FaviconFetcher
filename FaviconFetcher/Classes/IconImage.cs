@@ -103,10 +103,10 @@ namespace FaviconFetcher
                         var width = (int)(_bitmap.Width * scaleFactor);
                         var height = (int)(_bitmap.Height * scaleFactor);
 
-                        _bitmap = _bitmap.Resize(new SKImageInfo(width, height), SKFilterQuality.High);
+                        _bitmap = _bitmap.Resize(new SKSizeI(width, height), SKFilterQuality.High);
                     }
 
-                    SKData d = SKImage.FromBitmap(_bitmap).Encode(SKEncodedImageFormat.Png, 100);
+                    SKData d = _bitmap.Encode(SKEncodedImageFormat.Png, 100);
                     d.SaveTo(fs);
                 }
 
