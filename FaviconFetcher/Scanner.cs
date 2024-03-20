@@ -32,12 +32,14 @@ namespace FaviconFetcher
         }
 
         /// <summary>
-        /// Scans a URI for references to favicons.
+        /// Scans a URI for references to favicons asynchronously.
         /// </summary>
         /// <param name="uri">The uri of the webpage to scan for favicon references.</param>
         /// <returns>An enumerable of found favicon references.</returns>
-        public IEnumerable<ScanResult> Scan(Uri uri)
+        public async Task<List<ScanResult>> Scan(Uri uri)
         {
+            var scanResults = new List<ScanResult>();
+
             var scans = new Queue<SubScanner>();
             scans.Enqueue(new DefaultScanner(Source, uri));
 
@@ -47,18 +49,15 @@ namespace FaviconFetcher
             {
                 var scan = scans.Dequeue();
 
-                // Yielding a Task type requires Net8, so work-around
-                var task = Task.Run(async () => await scan.Start());
-                task.Wait();
-
-                // Go through found favicon references
-                foreach (ScanResult result in scan.Results)
-                    yield return result;
+                await scan.Start(cancelTokenSource);
+                scanResults.AddRange(scan.Results);
 
                 // Add all subscanners that are suggested
                 foreach (var suggested in scan.SuggestedScanners)
                     scans.Enqueue(suggested);
             }
+
+            return scanResults;
         }
 
     }
