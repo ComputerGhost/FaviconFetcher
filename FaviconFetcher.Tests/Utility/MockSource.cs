@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FaviconFetcher.Tests.Utility
@@ -45,7 +46,7 @@ namespace FaviconFetcher.Tests.Utility
             _imageResourceMap[uri].Add(image);
         }
 
-        public Task<IEnumerable<IconImage>> DownloadImages(Uri uri)
+        public Task<IEnumerable<IconImage>> DownloadImages(Uri uri, CancellationTokenSource cancelTokenSource)
         {
             ++RequestCount;
             if (!_imageResourceMap.ContainsKey(uri))
@@ -53,7 +54,7 @@ namespace FaviconFetcher.Tests.Utility
             return Task.FromResult(_imageResourceMap[uri] as System.Collections.Generic.IEnumerable<IconImage>);
         }
 
-        public Task<StreamReader> DownloadText(Uri uri)
+        public Task<StreamReader> DownloadText(Uri uri, CancellationTokenSource cancelTokenSource)
         {
             ++RequestCount;
             if (!_textResourceMap.ContainsKey(uri))

@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Cache;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FaviconFetcher
@@ -43,13 +44,20 @@ namespace FaviconFetcher
         /// Internal use only. Downloads a text resource from a URI.
         /// </summary>
         /// <param name="uri">The uri of the resource to download.</param>
+        /// <param name="cancelTokenSource">An optional flag for cancelling the download.</param>
         /// <returns>A reader for the resource, or null.</returns>
-        public async Task<StreamReader> DownloadText(Uri uri)
+        public async Task<StreamReader> DownloadText(Uri uri, CancellationTokenSource cancelTokenSource)
         {
-            var response = await _GetWebResponse(uri);
-            if (response.StatusCode != HttpStatusCode.OK)
+            var cancelToken = cancelTokenSource != null 
+                ? cancelTokenSource.Token 
+                : CancellationToken.None;
+
+            var response = await _GetWebResponse(uri, cancelToken);
+            if (cancelToken.IsCancellationRequested
+                || response == null
+                || response.StatusCode != HttpStatusCode.OK)
             {
-                response.Dispose(); // since we won't be passing on the response stream.
+                response?.Dispose(); // since we won't be passing on the response stream.
                 return null;
             }
 
@@ -73,17 +81,24 @@ namespace FaviconFetcher
         /// Internal use only. Downloads all images from a URI.
         /// </summary>
         /// <param name="uri">The URI of the image file to download.</param>
+        /// <param name="cancelTokenSource">An optional flag for cancelling the download.</param>
         /// <returns>All of the images found within the file.</returns>
-        public async Task<IEnumerable<IconImage>> DownloadImages(Uri uri)
+        public async Task<IEnumerable<IconImage>> DownloadImages(Uri uri, CancellationTokenSource cancelTokenSource)
         {
+            var cancelToken = cancelTokenSource != null
+                ? cancelTokenSource.Token
+                : CancellationToken.None;
+
             var images = new List<IconImage>();
             var contentType = string.Empty;
             var memoryStream = new MemoryStream();
             Uri responseUri = null;
 
-            using (var response = await _GetWebResponse(uri))
+            using (var response = await _GetWebResponse(uri, cancelToken))
             {
-                if (response.StatusCode != HttpStatusCode.OK)
+                if (cancelToken.IsCancellationRequested
+                    || response == null
+                    || response.StatusCode != HttpStatusCode.OK)
                     return images;
 
                 contentType = response.ContentType.ToLower();
@@ -101,9 +116,11 @@ namespace FaviconFetcher
             {
                 var redirectedUri = new Uri(responseUri.GetLeftPart(UriPartial.Authority).ToString() + uri.PathAndQuery);
                 // Try fetching same resource at the root of the redirected URI
-                using (var response = await _GetWebResponse(redirectedUri))
+                using (var response = await _GetWebResponse(redirectedUri, cancelToken))
                 {
-                    if (response.StatusCode != HttpStatusCode.OK)
+                    if (cancelToken.IsCancellationRequested
+                        || response == null
+                        || response.StatusCode != HttpStatusCode.OK)
                         return images;
 
                     contentType = response.ContentType;

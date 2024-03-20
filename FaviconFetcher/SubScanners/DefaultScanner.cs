@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 #if DEBUG
@@ -18,9 +19,9 @@ namespace FaviconFetcher.SubScanners
         {
         }
 
-        public async override Task Start()
+        public async override Task Start(CancellationTokenSource cancelTokenSource = null)
         {
-            using (var reader = await Source.DownloadText(TargetUri))
+            using (var reader = await Source.DownloadText(TargetUri, cancelTokenSource))
             {
                 if (reader != null)
                     _ParsePage(new TextParser(reader));

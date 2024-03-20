@@ -1,6 +1,7 @@
 ﻿using FaviconFetcher.Utility;
 using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FaviconFetcher
@@ -35,13 +36,17 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The webpage to scan for favicons.</param>
         /// <param name="size">The target size of the favicon.</param>
+        /// <param name="cancelTokenSource">An optional flag for cancelling the fetch.</param>
         /// <returns>The closest favicon to the size, or null.</returns>
-        public async Task<IconImage> FetchClosest(Uri uri, IconSize size)
+        public async Task<IconImage> FetchClosest(Uri uri, IconSize size, CancellationTokenSource cancelTokenSource = null)
         {
-            return await Fetch(uri, new FetchOptions
-            {
-                PerfectSize = size
-            });
+            return await Fetch(
+                uri, 
+                new FetchOptions
+                    {
+                        PerfectSize = size
+                    }, 
+                cancelTokenSource);
         }
 
         /// <summary>
@@ -49,15 +54,19 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The webpage to scan for favicons.</param>
         /// <param name="size">The target size of the favicon.</param>
+        /// <param name="cancelTokenSource">An optional flag for cancelling the fetch.</param>
         /// <returns>The favicon matching the size, or null.</returns>
-        public async Task<IconImage> FetchExact(Uri uri, IconSize size)
+        public async Task<IconImage> FetchExact(Uri uri, IconSize size, CancellationTokenSource cancelTokenSource = null)
         {
-            return await Fetch(uri, new FetchOptions
-            {
-                MinimumSize = size,
-                MaximumSize = size,
-                PerfectSize = size
-            });
+            return await Fetch(
+                uri, 
+                new FetchOptions
+                    {
+                        MinimumSize = size,
+                        MaximumSize = size,
+                        PerfectSize = size
+                    }, 
+                cancelTokenSource);
         }
 
         /// <summary>
@@ -65,11 +74,12 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The webpage to scan for favicons.</param>
         /// <param name="options">Filters for the returned result.</param>
+        /// <param name="cancelTokenSource">An optional flag for cancelling the fetch.</param>
         /// <returns>The matching favicon, or null.</returns>
-        public async Task<IconImage> Fetch(Uri uri, FetchOptions options)
+        public async Task<IconImage> Fetch(Uri uri, FetchOptions options, CancellationTokenSource cancelTokenSource = null)
         {
             using (var fetch = new FetchJob(Source, uri, options))
-                return await fetch.ScanAndFetch();
+                return await fetch.ScanAndFetch(cancelTokenSource);
         }
 
     }
