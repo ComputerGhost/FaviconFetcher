@@ -103,7 +103,7 @@ namespace FaviconFetcher
                     return images;
 
                 contentType = response.ContentType.ToLower();
-                response.GetResponseStream().CopyTo(memoryStream);
+                await response.GetResponseStream().CopyToAsync(memoryStream);
 
                 // Were we redirected and received a non-image response?
                 if (!uri.Equals(response.ResponseUri) 
@@ -126,7 +126,7 @@ namespace FaviconFetcher
 
                     contentType = response.ContentType;
                     memoryStream = new MemoryStream();
-                    response.GetResponseStream().CopyTo(memoryStream);
+                    await response.GetResponseStream().CopyToAsync(memoryStream);
                 }
             }
 
