@@ -43,8 +43,6 @@ namespace Example
 
                 _cancellationTokenSource = new CancellationTokenSource();
 
-                //await Task.Delay(10000, _cancellationTokenSource.Token);
-
                 picIcon.Size = new Size(16, 16);
                 picIcon.Image = null;
 
