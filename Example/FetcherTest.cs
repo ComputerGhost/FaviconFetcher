@@ -25,9 +25,9 @@ namespace Example
 
         private async void btnFetch_Click(object sender, EventArgs e)
         {
-            if (_isFetching && _cancellationTokenSource != null)
+            if (_isFetching)
             {
-                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource?.Cancel();
                 return;
             }
 

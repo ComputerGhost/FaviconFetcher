@@ -35,9 +35,9 @@ namespace Example
         {
             try
             {
-                if (_isScanning && _cancellationTokenSource != null)
+                if (_isScanning)
                 {
-                    _cancellationTokenSource.Cancel();
+                    _cancellationTokenSource?.Cancel();
                     return;
                 }
 
