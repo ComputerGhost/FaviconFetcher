@@ -58,16 +58,14 @@ namespace Example
                     }));
                 }
             }
-            catch (TaskCanceledException)
-            {
-                _cancellationTokenSource?.Dispose();
-            }
+            catch (TaskCanceledException) { }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
             finally
             {
+                _cancellationTokenSource?.Dispose();
                 _isScanning = false;
                 ((Button)sender).Text = "Scan";
                 _cancellationTokenSource?.Dispose();

@@ -62,16 +62,14 @@ namespace Example
                     picIcon.Image = image.ToSKBitmap().ToBitmap();
                 }
             }
-            catch (TaskCanceledException)
-            {
-                _cancellationTokenSource?.Dispose();
-            }
+            catch (TaskCanceledException) { }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
             finally
             {
+                _cancellationTokenSource?.Dispose();
                 _isFetching = false;
                 ((Button)sender).Text = "Fetch";
             }
