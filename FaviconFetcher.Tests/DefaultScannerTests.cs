@@ -121,7 +121,7 @@ namespace FaviconFetcher.Tests
                 </head><body>Fake content.</body></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(2, scanner.Results.Count);
         }
@@ -137,7 +137,7 @@ namespace FaviconFetcher.Tests
                 </head><body>Fake content.</body></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -157,7 +157,7 @@ namespace FaviconFetcher.Tests
                 </head><body>Fake content.</body></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -177,7 +177,7 @@ namespace FaviconFetcher.Tests
                 </head><body>Fake content.</body></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -197,7 +197,7 @@ namespace FaviconFetcher.Tests
                 </head><body>Fake content.</body></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -217,7 +217,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -237,7 +237,7 @@ namespace FaviconFetcher.Tests
                 </body></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
         }
@@ -253,7 +253,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -274,7 +274,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -295,7 +295,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -316,7 +316,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -337,7 +337,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -358,7 +358,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -379,7 +379,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(new ScanResult
             {
@@ -396,7 +396,7 @@ namespace FaviconFetcher.Tests
             source.AddTextResource(uri, "Fake content.");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count);
@@ -415,7 +415,7 @@ namespace FaviconFetcher.Tests
                 </head><body>Fake content.</body></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count);
@@ -429,7 +429,7 @@ namespace FaviconFetcher.Tests
             var source = new MockSource();
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count);
@@ -444,7 +444,7 @@ namespace FaviconFetcher.Tests
             source.AddTextResource(uri, "<html><head><link rel='");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count);
@@ -459,7 +459,7 @@ namespace FaviconFetcher.Tests
             source.AddTextResource(uri, "<html><head><link rel=");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count);
@@ -474,7 +474,7 @@ namespace FaviconFetcher.Tests
             source.AddTextResource(uri, "<html><head><link");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count);
@@ -492,7 +492,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
             Assert.AreEqual(2, scanner.SuggestedScanners.Count); // plus FaviconIcoScanner
@@ -511,7 +511,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(1, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count); // just FaviconIcoScanner
@@ -529,7 +529,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(1, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count); // just FaviconIcoScanner
@@ -546,7 +546,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(0, scanner.Results.Count);
             Assert.AreEqual(2, scanner.SuggestedScanners.Count); // plus FaviconIcoScanner
@@ -565,7 +565,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(1, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count); // just FaviconIcoScanner
@@ -583,7 +583,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual(1, scanner.Results.Count);
             Assert.AreEqual(1, scanner.SuggestedScanners.Count); // just FaviconIcoScanner
@@ -601,7 +601,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual("http://www.other.com/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
         }
@@ -618,7 +618,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual("http://www.other.com/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
         }
@@ -635,7 +635,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual("http://www.example.com/sub/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
         }
@@ -652,7 +652,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual("http://www.example.com/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
         }
@@ -669,7 +669,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var scanner = new DefaultScanner(source, uri);
-            scanner.Start();
+            scanner.Start().Wait();
 
             Assert.AreEqual("http://www.example.com/browserconfig.xml", scanner.SuggestedScanners[0].TargetUri.ToString());
         }

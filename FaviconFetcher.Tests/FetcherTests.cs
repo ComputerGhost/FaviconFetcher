@@ -16,7 +16,7 @@ namespace FaviconFetcher.Tests
             source.AddTextResource(uri, "Fake content.");
 
             var fetcher = new Fetcher(source);
-            fetcher.FetchClosest(uri, new IconSize(16, 16));
+            fetcher.FetchClosest(uri, new IconSize(16, 16)).Wait();
 
             Assert.AreEqual(2, source.RequestCount);
         }
@@ -32,7 +32,7 @@ namespace FaviconFetcher.Tests
                 </head></html>");
 
             var fetcher = new Fetcher(source);
-            fetcher.FetchClosest(uri, new IconSize(16, 16));
+            fetcher.FetchClosest(uri, new IconSize(16, 16)).Wait();
 
             Assert.AreEqual(3, source.RequestCount);
         }
@@ -51,13 +51,13 @@ namespace FaviconFetcher.Tests
             source.AddImageResource(new Uri(uri, "/favicon_16.png"), new IconSize(16, 16));
 
             var fetcher = new Fetcher(source);
-            fetcher.FetchClosest(uri, new IconSize(16, 16));
+            fetcher.FetchClosest(uri, new IconSize(16, 16)).Wait();
 
             Assert.AreEqual(2, source.RequestCount);
         }
 
         [TestMethod]
-        public async Task Fetcher_MultipleIconsInFile_UseBest()
+        public void Fetcher_MultipleIconsInFile_UseBest()
         {
             var uri = new Uri("http://www.example.com");
             var source = new MockSource();
@@ -67,7 +67,7 @@ namespace FaviconFetcher.Tests
             source.AddImageResource(new Uri(uri, "/favicon.ico"), new IconSize(48, 48));
 
             var fetcher = new Fetcher(source);
-            var image = await fetcher.FetchClosest(uri, new IconSize(32, 32));
+            var image = fetcher.FetchClosest(uri, new IconSize(32, 32)).Result;
 
             Assert.AreEqual(2, source.RequestCount);
             Assert.AreEqual(new IconSize(32, 32), image.Size);

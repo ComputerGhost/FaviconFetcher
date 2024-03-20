@@ -58,7 +58,7 @@ namespace FaviconFetcher.Tests.Utility
         {
             ++RequestCount;
             if (!_textResourceMap.ContainsKey(uri))
-                return null;
+                return Task.FromResult((StreamReader)null);
             var contents = _textResourceMap[uri];
 
             var memoryStream = new MemoryStream();
