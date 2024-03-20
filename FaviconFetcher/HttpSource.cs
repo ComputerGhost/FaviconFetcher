@@ -184,9 +184,14 @@ namespace FaviconFetcher
         }
         
         // Setup and make a web request, returning the response.
-        private async Task<HttpWebResponse> _GetWebResponse(Uri uri)
+        private async Task<HttpWebResponse> _GetWebResponse(Uri uri, CancellationToken cancellationToken)
         {
+            System.Diagnostics.Debug.WriteLine("Fetching");
+
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
             var request = WebRequest.Create(uri) as HttpWebRequest;
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
+
             request.CachePolicy = CachePolicy;
             request.UserAgent = UserAgent;
 
@@ -197,7 +202,11 @@ namespace FaviconFetcher
             // so we need to handle it in a try-catch.
             try
             {
-                return request.GetResponse() as HttpWebResponse;
+                return await request.GetResponseAsync().WithCancellation(cancellationToken, request.Abort, true) as HttpWebResponse;
+            }
+            catch (TaskCanceledException)
+            {
+                return null;
             }
             catch (WebException ex)
             {
