@@ -125,6 +125,10 @@ namespace FaviconFetcher.Utility
         {
             if (Options.PerfectSize == IconSize.Empty)
                 return false;
+
+            if (size == IconSize.Scaleable)
+                return true;
+
             return size == Options.PerfectSize;
         }
 
