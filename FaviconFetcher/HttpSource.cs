@@ -187,8 +187,6 @@ namespace FaviconFetcher
         // Setup and make a web request, returning the response.
         private async Task<HttpWebResponse> _GetWebResponse(Uri uri, CancellationToken cancellationToken)
         {
-            System.Diagnostics.Debug.WriteLine("Fetching");
-
 #pragma warning disable SYSLIB0014 // Type or member is obsolete
             var request = WebRequest.Create(uri) as HttpWebRequest;
 #pragma warning restore SYSLIB0014 // Type or member is obsolete
