@@ -29,7 +29,7 @@ namespace FaviconFetcher.Tests
                 </browserconfig>");
 
             var scanner = new BrowserconfigXmlScanner(source, uri);
-            scanner.Start();
+            scanner.Start().GetAwaiter();
 
             Assert.AreEqual(4, scanner.Results.Count);
         }
@@ -43,7 +43,7 @@ namespace FaviconFetcher.Tests
                 <browserconfig>>");
 
             var scanner = new BrowserconfigXmlScanner(source, uri);
-            scanner.Start();
+            scanner.Start().GetAwaiter();
 
             Assert.AreEqual(0, scanner.Results.Count);
         }
@@ -68,7 +68,7 @@ namespace FaviconFetcher.Tests
                 </browserconfig>");
 
             var scanner = new BrowserconfigXmlScanner(source, uri);
-            scanner.Start();
+            scanner.Start().GetAwaiter();
 
             Assert.AreEqual(3, scanner.Results.Count);
         }

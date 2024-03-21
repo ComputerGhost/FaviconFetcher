@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FaviconFetcher
 {
@@ -31,30 +33,34 @@ namespace FaviconFetcher
         }
 
         /// <summary>
-        /// Scans a URI for references to favicons.
+        /// Scans a URI for references to favicons asynchronously.
         /// </summary>
         /// <param name="uri">The uri of the webpage to scan for favicon references.</param>
+        /// <param name="cancelTokenSource">An optional flag for cancelling the scan.</param>
         /// <returns>An enumerable of found favicon references.</returns>
-        public IEnumerable<ScanResult> Scan(Uri uri)
+        public async Task<List<ScanResult>> Scan(Uri uri, CancellationTokenSource cancelTokenSource = null)
         {
+            var scanResults = new List<ScanResult>();
+
             var scans = new Queue<SubScanner>();
             scans.Enqueue(new DefaultScanner(Source, uri));
 
             // While we have subscanners queued
             var max_scans = 4;
-            while (scans.Count > 0 && max_scans-- > 0)
+            while (scans.Count > 0 && max_scans-- > 0 
+                && (cancelTokenSource == null || !cancelTokenSource.IsCancellationRequested))
             {
                 var scan = scans.Dequeue();
-                scan.Start();
 
-                // Go through found favicon references
-                foreach (var result in scan.Results)
-                    yield return result;
+                await scan.Start(cancelTokenSource);
+                scanResults.AddRange(scan.Results);
 
                 // Add all subscanners that are suggested
                 foreach (var suggested in scan.SuggestedScanners)
                     scans.Enqueue(suggested);
             }
+
+            return scanResults;
         }
 
     }

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,15 +28,29 @@ namespace Example
             _ExpandLocationColumn();
         }
 
-        private void btnScan_Click(object sender, EventArgs e)
+        private bool _isScanning = false;
+        private CancellationTokenSource _cancellationTokenSource = null;
+
+        private async void btnScan_Click(object sender, EventArgs e)
         {
             try
             {
+                if (_isScanning)
+                {
+                    _cancellationTokenSource?.Cancel();
+                    return;
+                }
+
+                _isScanning = true;
+                ((Button)sender).Text = "Cancel";
+
                 var uri = new Uri(txtUri.Text);
 
                 lstResults.Items.Clear();
 
-                foreach (var result in new Scanner().Scan(uri))
+                _cancellationTokenSource = new CancellationTokenSource();
+
+                foreach (var result in await new Scanner().Scan(uri, _cancellationTokenSource))
                 {
                     lstResults.Items.Add(new ListViewItem(new[]{
                         result.ExpectedSize.ToString(),
@@ -43,9 +58,17 @@ namespace Example
                     }));
                 }
             }
+            catch (TaskCanceledException) { }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                _cancellationTokenSource?.Dispose();
+                _isScanning = false;
+                ((Button)sender).Text = "Scan";
+                _cancellationTokenSource?.Dispose();
             }
         }
 
