@@ -38,7 +38,7 @@ namespace FaviconFetcher.Utility
         }
 
         // Scan and fetches best icon per Options.
-        public async Task<IconImage> ScanAndFetch(CancellationTokenSource cancelTokenSource)
+        public async Task<IconImage> ScanAndFetch(CancellationTokenSource cancelTokenSource = null)
         {
             var parsedUris = new HashSet<Uri>();
             foreach (var possibleIcon in await new Scanner(Source).Scan(TargetUri, cancelTokenSource))
