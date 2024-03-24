@@ -138,7 +138,13 @@ namespace FaviconFetcher
         /// <returns>SKBitmap</returns>
         public override SKBitmap ToSKBitmap()
         {
-            return _bitmap;
+            if (_bitmap != null) return _bitmap;
+
+            var bitmapSize = Size.Width <= 0 || Size.Height <= 0
+                ? new IconSize(16, 16)
+                : Size;
+
+            return new SKBitmap(new SKImageInfo(bitmapSize.Width, bitmapSize.Height));
         }
 
         /// <summary>
