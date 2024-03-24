@@ -41,32 +41,39 @@ namespace FaviconFetcher
                 Size = size ?? new IconSize(bitmap.Width, bitmap.Height)
             };
 
-            // Resize if mismatch
-            if (svgIconImage.Size.Width != bitmap.Width || svgIconImage.Size.Height != bitmap.Height)
+            try
             {
-                bitmap = bitmap.Resize(new SKImageInfo(svgIconImage.Size.Width, svgIconImage.Size.Height), SKFilterQuality.High);
-            }
-
-            using (MemoryStream ms = new MemoryStream())
-            {
-                SKData d = bitmap.Encode(SKEncodedImageFormat.Png, 100);
-                d.SaveTo(ms);
-
-                var bitmapBase64 = Convert.ToBase64String(ms.GetBuffer());
-
-                // Construct raw SVG XML with bitmap data embedded as base64 string
-                var rawSVG = string.Format(
-                    @"<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" width=""{1}"" height=""{2}""><image width=""{1}"" height=""{2}"" xlink:href=""data:image/png;base64,{0}""/></svg>",
-                    bitmapBase64,
-                    svgIconImage.Size.Width,
-                    svgIconImage.Size.Height);
-
-                using (XmlReader r = XmlReader.Create(new StringReader(rawSVG)))
+                // Resize if mismatch
+                if (svgIconImage.Size.Width != bitmap.Width || svgIconImage.Size.Height != bitmap.Height)
                 {
-                    svgIconImage._svg = new SkiaSharp.Extended.Svg.SKSvg();
-                    // Attempt to load the svg data
-                    svgIconImage._svg.Load(r);
+                    bitmap = bitmap.Resize(new SKImageInfo(svgIconImage.Size.Width, svgIconImage.Size.Height), SKFilterQuality.High);
                 }
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    SKData d = bitmap.Encode(SKEncodedImageFormat.Png, 100);
+                    d.SaveTo(ms);
+
+                    var bitmapBase64 = Convert.ToBase64String(ms.GetBuffer());
+
+                    // Construct raw SVG XML with bitmap data embedded as base64 string
+                    var rawSVG = string.Format(
+                        @"<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" width=""{1}"" height=""{2}""><image width=""{1}"" height=""{2}"" xlink:href=""data:image/png;base64,{0}""/></svg>",
+                        bitmapBase64,
+                        svgIconImage.Size.Width,
+                        svgIconImage.Size.Height);
+
+                    using (XmlReader r = XmlReader.Create(new StringReader(rawSVG)))
+                    {
+                        svgIconImage._svg = new SkiaSharp.Extended.Svg.SKSvg();
+                        // Attempt to load the svg data
+                        svgIconImage._svg.Load(r);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
             }
 
             return svgIconImage;
@@ -87,21 +94,25 @@ namespace FaviconFetcher
                 Size = size ?? IconSize.Empty
             };
 
-            using (MemoryStream memStream = new MemoryStream())
+            try
             {
-                stream.Position = 0;
-                stream.CopyTo(memStream);
-                memStream.Position = 0; // Reset to start for decode
-
-                var svg = new SkiaSharp.Extended.Svg.SKSvg();
-                svg.Load(memStream);
-                svgIconImage._svg = svg;
-
-                if (svgIconImage.Size == IconSize.Empty)
+                using (MemoryStream memStream = new MemoryStream())
                 {
-                    svgIconImage.Size = new IconSize((int)svg.CanvasSize.Width, (int)svg.CanvasSize.Height);
+                    stream.Position = 0;
+                    stream.CopyTo(memStream);
+                    memStream.Position = 0; // Reset to start for decode
+
+                    var svg = new SkiaSharp.Extended.Svg.SKSvg();
+                    svg.Load(memStream);
+                    svgIconImage._svg = svg;
+
+                    if (svgIconImage.Size == IconSize.Empty)
+                    {
+                        svgIconImage.Size = new IconSize((int)svg.CanvasSize.Width, (int)svg.CanvasSize.Height);
+                    }
                 }
             }
+            catch (Exception) { }
 
             return svgIconImage;
         }
@@ -169,20 +180,25 @@ namespace FaviconFetcher
         public SKBitmap ToSKBitmap(IconSize size)
         {
             SKBitmap bitmap = new SKBitmap(size.Width, size.Height);
-            SKCanvas canvas = new SKCanvas(bitmap);
 
-            SKRect bounds = _svg.ViewBox.IsEmpty
-                ? new SKRect(0, 0, _svg.CanvasSize.Width, _svg.CanvasSize.Height)
-                : _svg.ViewBox;
+            try
+            {
+                SKCanvas canvas = new SKCanvas(bitmap);
+                SKRect bounds = _svg.ViewBox.IsEmpty
+                    ? new SKRect(0, 0, _svg.CanvasSize.Width, _svg.CanvasSize.Height)
+                    : _svg.ViewBox;
 
-            float xRatio = size.Width / bounds.Width;
-            float yRatio = size.Height / bounds.Height;
+                float xRatio = size.Width / bounds.Width;
+                float yRatio = size.Height / bounds.Height;
 
-            float ratio = Math.Min(xRatio, yRatio);
+                float ratio = Math.Min(xRatio, yRatio);
 
-            canvas.Scale(ratio);
-            canvas.DrawPicture(_svg.Picture);
-            canvas.Flush();
+                canvas.Scale(ratio);
+                canvas.DrawPicture(_svg.Picture);
+                canvas.Flush();
+
+            }
+            catch (Exception) { }
 
             return bitmap;
         }
