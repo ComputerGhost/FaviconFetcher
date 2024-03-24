@@ -10,7 +10,7 @@ namespace FaviconFetcher
         /// <summary>
         /// A width or height value indicating that the size is scaleable to any size
         /// </summary>
-        public static int SCALEABLE_SIZE = 0;
+        public static int SCALEABLE_SIZE = -1;
 
         private SKSizeI _size;
 
