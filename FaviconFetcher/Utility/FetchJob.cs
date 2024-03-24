@@ -80,7 +80,7 @@ namespace FaviconFetcher.Utility
         // Downloads images. If perfect found, returns it.
         private IconImage DownloadImages_ReturnPerfect(Uri uri)
         {
-            foreach (var image in Source.DownloadImages(uri))
+            foreach (var image in Source.DownloadImages(uri, Options.PerfectSize))
             {
                 if (_IsPerfect(image.Size))
                     return image;

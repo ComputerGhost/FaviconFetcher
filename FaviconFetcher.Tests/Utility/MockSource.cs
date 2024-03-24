@@ -45,7 +45,7 @@ namespace FaviconFetcher.Tests.Utility
             _imageResourceMap[uri].Add(image);
         }
 
-        public IEnumerable<IconImage> DownloadImages(Uri uri)
+        public IEnumerable<IconImage> DownloadImages(Uri uri, IconSize perfectSize = null)
         {
             ++RequestCount;
             if (!_imageResourceMap.ContainsKey(uri))

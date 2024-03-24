@@ -73,7 +73,7 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The URI of the image file to download.</param>
         /// <returns>All of the images found within the file.</returns>
-        public IEnumerable<IconImage> DownloadImages(Uri uri)
+        public IEnumerable<IconImage> DownloadImages(Uri uri, IconSize perfectSize = null)
         {
             var images = new List<IconImage>();
             var contentType = string.Empty;
