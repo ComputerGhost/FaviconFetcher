@@ -176,7 +176,15 @@ namespace FaviconFetcher
         {
             var request = WebRequest.Create(uri) as HttpWebRequest;
             request.CachePolicy = CachePolicy;
+
+#if DEBUG
+            // Debugging with the default UserAgent is annoying due to blocked requests
+            // so make it something that will hopefully get past the blocking.
+            // See Issue #27 https://github.com/ComputerGhost/FaviconFetcher/issues/27
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) (KHTML, like Gecko) " + UserAgent;
+#else
             request.UserAgent = UserAgent;
+#endif
 
             if (RequestsProxy != null)
                 request.Proxy = RequestsProxy;
