@@ -107,6 +107,8 @@ namespace FaviconFetcher.Utility
         // Is a size within the min/max range?
         private bool _IsInRange(IconSize size)
         {
+            if (size.Width == IconSize.SCALEABLE_SIZE || size.Height == IconSize.SCALEABLE_SIZE)
+                return true;
             if (Options.RequireSquare && size.Width != size.Height)
                 return false;
             if (size.Width < Options.MinimumSize.Width)
