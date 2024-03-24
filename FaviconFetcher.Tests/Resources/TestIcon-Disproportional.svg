@@ -19,13 +19,13 @@
     <g transform="matrix(6.12323e-17,1,-1,6.12323e-17,255.197,128)">
         <path d="M-128,-0.803L384,255.197" style="fill:none;stroke:white;stroke-width:1.47px;"/>
     </g>
-    <g transform="matrix(-0.707107,0.707107,-0.707107,-0.707107,308.05,255.599)">
+    <g transform="matrix(-0.501573,0.707107,-0.501573,-0.707107,256,255.599)">
         <path d="M0,0L255.197,255.197" style="fill:none;stroke:white;stroke-width:1.47px;"/>
     </g>
-    <g transform="matrix(-0.707107,0.707107,-0.707107,-0.707107,308.05,201.599)">
+    <g transform="matrix(-0.501573,0.707107,-0.501573,-0.707107,256,201.599)">
         <path d="M0,0L255.197,255.197" style="fill:none;stroke:white;stroke-width:1.47px;"/>
     </g>
-    <g transform="matrix(-0.707107,0.707107,-0.707107,-0.707107,308.05,309.599)">
+    <g transform="matrix(-0.501573,0.707107,-0.501573,-0.707107,256,309.599)">
         <path d="M0,0L255.197,255.197" style="fill:none;stroke:white;stroke-width:1.47px;"/>
     </g>
     <g transform="matrix(0.707107,1.00315,-0.707107,1.00315,127.599,-5.68434e-14)">
