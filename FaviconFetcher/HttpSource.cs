@@ -111,6 +111,12 @@ namespace FaviconFetcher
                 }
             }
 
+            // SVG file
+            if (_IsContentTypeSvg(contentType))
+            {
+                images.Add(SVGIconImage.FromStream(memoryStream, perfectSize));
+            }
+
             // Ico file
             if (_IsContentTypeIco(contentType))
             {
@@ -187,6 +193,22 @@ namespace FaviconFetcher
                     throw;
                 return ex.Response as HttpWebResponse;
             }
+        }
+
+        private bool _IsContentTypeSvg(string contentType)
+        {
+            // Check content type
+            var iconTypes = new[] {
+                "image/svg+xml",
+                "image/svg"
+            };
+            foreach (var iconType in iconTypes)
+            {
+                if (contentType.Contains(iconType))
+                    return true;
+            }
+            return false;
+
         }
 
         // Check whether the file is an ico.
