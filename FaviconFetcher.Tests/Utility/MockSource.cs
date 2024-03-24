@@ -34,7 +34,7 @@ namespace FaviconFetcher.Tests.Utility
             using (var bitmap = new SKBitmap(1, 1))
             {
                 bitmap.SetPixel(0, 0, SKColor.FromHsl(255, 255, 255));
-                AddImageResource(uri, IconImage.FromSKBitmap(bitmap, new IconSize(imageSize.Width, imageSize.Height)));
+                AddImageResource(uri, BitmapIconImage.FromSKBitmap(bitmap, new IconSize(imageSize.Width, imageSize.Height)));
             }
         }
 

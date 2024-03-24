@@ -119,7 +119,7 @@ namespace FaviconFetcher
                     foreach (var size in _ExtractIcoSizes(memoryStream))
                     {
                         memoryStream.Position = 0;
-                        images.Add(IconImage.FromIco(memoryStream, size));
+                        images.Add(BitmapIconImage.FromStream(memoryStream, size));
                     }
                     return images;
                 }
@@ -134,7 +134,7 @@ namespace FaviconFetcher
             // Other image type
             try
             {
-                images.Add(IconImage.FromStream(memoryStream));
+                images.Add(BitmapIconImage.FromStream(memoryStream));
             }
             catch (ArgumentException) {}
             return images;
