@@ -27,6 +27,6 @@ namespace FaviconFetcher
         /// </remarks>
         /// <param name="uri">The URI of the image file to download.</param>
         /// <returns>All of the images found within the file, or an empty list.</returns>
-        IEnumerable<IconImage> DownloadImages(Uri uri);
+        IEnumerable<IconImage> DownloadImages(Uri uri, IconSize perfectSize = null);
     }
 }
