@@ -73,7 +73,7 @@ namespace FaviconFetcher
         /// </summary>
         /// <param name="uri">The URI of the image file to download.</param>
         /// <returns>All of the images found within the file.</returns>
-        public IEnumerable<IconImage> DownloadImages(Uri uri, IconSize perfectSize = null)
+        public IEnumerable<IconImage> DownloadImages(Uri uri)
         {
             var images = new List<IconImage>();
             var contentType = string.Empty;
@@ -114,7 +114,7 @@ namespace FaviconFetcher
             // SVG file
             if (_IsContentTypeSvg(contentType))
             {
-                images.Add(SVGIconImage.FromStream(memoryStream, perfectSize));
+                images.Add(SVGIconImage.FromStream(memoryStream, IconSize.Scaleable));
             }
 
             // Ico file

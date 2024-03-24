@@ -91,7 +91,9 @@ namespace FaviconFetcher
         {
             var svgIconImage = new SVGIconImage
             {
-                Size = size ?? IconSize.Empty
+                Size = size == null || size == IconSize.Empty
+                    ? IconSize.Scaleable
+                    : size
             };
 
             try
@@ -105,11 +107,6 @@ namespace FaviconFetcher
                     var svg = new SkiaSharp.Extended.Svg.SKSvg();
                     svg.Load(memStream);
                     svgIconImage._svg = svg;
-
-                    if (svgIconImage.Size == IconSize.Empty)
-                    {
-                        svgIconImage.Size = new IconSize((int)svg.CanvasSize.Width, (int)svg.CanvasSize.Height);
-                    }
                 }
             }
             catch (Exception) { }
