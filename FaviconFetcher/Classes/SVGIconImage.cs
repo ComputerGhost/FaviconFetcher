@@ -180,10 +180,19 @@ namespace FaviconFetcher
 
             try
             {
+                // We can't use SkBitmap.FromImage(SKImage.FromPicture(_svg.Picture)... here
+                // unfortunately, because that doesn't allow us to scale vector to fit size
+                //bitmap = SKBitmap.FromImage(SKImage.FromPicture(_svg.Picture, new SKSizeI(size.Width, size.Height)));
+
                 SKCanvas canvas = new SKCanvas(bitmap);
-                SKRect bounds = _svg.ViewBox.IsEmpty
-                    ? new SKRect(0, 0, _svg.CanvasSize.Width, _svg.CanvasSize.Height)
-                    : _svg.ViewBox;
+
+                // ViewBox not always reliable and browsers seem to typically ignore the
+                // SVG ViewBox for favicons, so adopting same behavior which resolves
+                // some clipping seen in testing with various sites.
+                SKRect bounds = new SKRect(0, 0, _svg.CanvasSize.Width, _svg.CanvasSize.Height);
+                //SKRect bounds = _svg.ViewBox.IsEmpty
+                //    ? new SKRect(0, 0, _svg.CanvasSize.Width, _svg.CanvasSize.Height)
+                //    : _svg.ViewBox;
 
                 float xRatio = size.Width / bounds.Width;
                 float yRatio = size.Height / bounds.Height;
