@@ -111,6 +111,12 @@ namespace FaviconFetcher
                 }
             }
 
+            // SVG file
+            if (_IsContentTypeSvg(contentType))
+            {
+                images.Add(SVGIconImage.FromStream(memoryStream, IconSize.Scaleable));
+            }
+
             // Ico file
             if (_IsContentTypeIco(contentType))
             {
@@ -119,7 +125,7 @@ namespace FaviconFetcher
                     foreach (var size in _ExtractIcoSizes(memoryStream))
                     {
                         memoryStream.Position = 0;
-                        images.Add(IconImage.FromIco(memoryStream, size));
+                        images.Add(BitmapIconImage.FromStream(memoryStream, size));
                     }
                     return images;
                 }
@@ -134,7 +140,7 @@ namespace FaviconFetcher
             // Other image type
             try
             {
-                images.Add(IconImage.FromStream(memoryStream));
+                images.Add(BitmapIconImage.FromStream(memoryStream));
             }
             catch (ArgumentException) {}
             return images;
@@ -170,7 +176,15 @@ namespace FaviconFetcher
         {
             var request = WebRequest.Create(uri) as HttpWebRequest;
             request.CachePolicy = CachePolicy;
+
+#if DEBUG
+            // Debugging with the default UserAgent is annoying due to blocked requests
+            // so make it something that will hopefully get past the blocking.
+            // See Issue #27 https://github.com/ComputerGhost/FaviconFetcher/issues/27
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) (KHTML, like Gecko) " + UserAgent;
+#else
             request.UserAgent = UserAgent;
+#endif
 
             if (RequestsProxy != null)
                 request.Proxy = RequestsProxy;
@@ -187,6 +201,22 @@ namespace FaviconFetcher
                     throw;
                 return ex.Response as HttpWebResponse;
             }
+        }
+
+        private bool _IsContentTypeSvg(string contentType)
+        {
+            // Check content type
+            var iconTypes = new[] {
+                "image/svg+xml",
+                "image/svg"
+            };
+            foreach (var iconType in iconTypes)
+            {
+                if (contentType.Contains(iconType))
+                    return true;
+            }
+            return false;
+
         }
 
         // Check whether the file is an ico.

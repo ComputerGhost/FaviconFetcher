@@ -136,6 +136,12 @@ namespace FaviconFetcher.SubScanners
                 }
             }
 
+            // If SVG, assign a scaleable size
+            if (attributes.ContainsKey("type") && attributes["type"].ToLower() == "image/svg+xml")
+            {
+                sizes.Add(IconSize.Scaleable);
+            }
+
             // If no valid sizes, try some deduction...
             if (sizes.Count == 0) {
                 if (rel.Contains("apple"))

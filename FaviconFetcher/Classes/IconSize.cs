@@ -7,6 +7,11 @@ namespace FaviconFetcher
 {
     public class IconSize : EqualityComparer<IconSize>, IEquatable<IconSize>
     {
+        /// <summary>
+        /// A width or height value indicating that the size is scaleable to any size
+        /// </summary>
+        public static int SCALEABLE_SIZE = -1;
+
         private SKSizeI _size;
 
         public IconSize()
@@ -48,6 +53,17 @@ namespace FaviconFetcher
             get
             {
                 return new IconSize();
+            }
+        }
+
+        /// <summary>
+        /// An IconSize representing a scaleable vector icon
+        /// </summary>
+        public static IconSize Scaleable
+        {
+            get
+            {
+                return new IconSize(SCALEABLE_SIZE, SCALEABLE_SIZE);
             }
         }
 
