@@ -39,7 +39,7 @@ namespace FaviconFetcher.Tests
                 </tile></msapplication></browserconfig>");
 
             var scanner = new Scanner(source);
-            var results = scanner.Scan(uri).ToArray();
+            var results = scanner.Scan(uri).GetAwaiter().GetResult().ToArray();
 
             Assert.AreEqual(12, results.Length);
         }

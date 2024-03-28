@@ -40,7 +40,7 @@ The fetcher will scan a webpage for favicons and download the one that best matc
 
 ```csharp
 var fetcher = new Fetcher();
-var image = fetcher.FetchClosest(uri, new Size(16, 16));
+var image = await fetcher.FetchClosest(uri, new Size(16, 16));
 // Don't forget to dispose of the image when no longer needed.
 ```
 
@@ -53,7 +53,7 @@ To get a list of possible favicons without downloading any, use the scanner.
 
 ```csharp
 var scanner = new Scanner();
-foreach (var result in scanner.Scan(uri))
+foreach (var result in await scanner.Scan(uri))
 {
     var expectedSize = result.ExpectedSize;
     var absoluteUri = result.Location;
@@ -73,7 +73,7 @@ var source = new HttpSource() {
     CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable)
 };
 var fetcher = new Fetcher(source);
-var image = fetcher.FetchClosest(uri, new Size(16, 16));
+var image = await fetcher.FetchClosest(uri, new Size(16, 16));
 // Don't forget to dispose of the image when no longer needed.
 ```
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FaviconFetcher
@@ -16,8 +17,9 @@ namespace FaviconFetcher
         /// Downloads a text-based resource from a URI.
         /// </summary>
         /// <param name="uri">The URI of the resource to download.</param>
+        /// <param name="cancelTokenSource">An optional flag for cancelling the download.</param>
         /// <returns>A reader for the resource, or null.</returns>
-        StreamReader DownloadText(Uri uri);
+        Task<StreamReader> DownloadText(Uri uri, CancellationTokenSource cancelTokenSource);
 
         /// <summary>
         /// Downloads all images from a URI.
@@ -25,8 +27,9 @@ namespace FaviconFetcher
         /// <remarks>
         /// Multiple images are returned, because some file formats allow multiple images.
         /// </remarks>
-        /// <param name="uri">The URI of the image file to download.</param>
+        /// <param name="cancelTokenSource">An optional flag for cancelling the download.</param>
+        /// <param name="cancelTokenSource"></param>
         /// <returns>All of the images found within the file, or an empty list.</returns>
-        IEnumerable<IconImage> DownloadImages(Uri uri);
+        Task<IEnumerable<IconImage>> DownloadImages(Uri uri, CancellationTokenSource cancelTokenSource);
     }
 }
