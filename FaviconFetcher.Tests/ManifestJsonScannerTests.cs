@@ -21,7 +21,7 @@ namespace FaviconFetcher.Tests
                 ]}".Replace('\'', '"'));
 
             var scanner = new ManifestJsonScanner(source, uri);
-            scanner.Start();
+            scanner.Start().GetAwaiter();
 
             Assert.AreEqual(2, scanner.Results.Count);
         }
@@ -39,7 +39,7 @@ namespace FaviconFetcher.Tests
                 ]}");
 
             var scanner = new ManifestJsonScanner(source, uri);
-            scanner.Start();
+            scanner.Start().GetAwaiter();
 
             Assert.AreEqual(0, scanner.Results.Count);
         }
@@ -57,7 +57,7 @@ namespace FaviconFetcher.Tests
                 ]}".Replace('\'', '"'));
 
             var scanner = new ManifestJsonScanner(source, uri);
-            scanner.Start();
+            scanner.Start().GetAwaiter();
 
             Assert.AreEqual(1, scanner.Results.Count);
         }

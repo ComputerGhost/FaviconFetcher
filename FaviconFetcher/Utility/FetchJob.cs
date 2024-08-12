@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FaviconFetcher.Utility
@@ -37,10 +38,10 @@ namespace FaviconFetcher.Utility
         }
 
         // Scan and fetches best icon per Options.
-        public IconImage ScanAndFetch()
+        public async Task<IconImage> ScanAndFetch(CancellationTokenSource cancelTokenSource = null)
         {
             var parsedUris = new HashSet<Uri>();
-            foreach (var possibleIcon in new Scanner(Source).Scan(TargetUri))
+            foreach (var possibleIcon in await new Scanner(Source).Scan(TargetUri, cancelTokenSource))
             {
                 // Because the scanner can return duplicate URIs.
                 if (parsedUris.Contains(possibleIcon.Location))
@@ -50,7 +51,7 @@ namespace FaviconFetcher.Utility
                 // Hopefully we've already found it
                 if (_IsPerfect(possibleIcon.ExpectedSize))
                 {
-                    var image = DownloadImages_ReturnPerfect(possibleIcon.Location);
+                    var image = await DownloadImages_ReturnPerfect(possibleIcon.Location, cancelTokenSource);
                     if (image != null)
                         return image;
                 }
@@ -65,7 +66,7 @@ namespace FaviconFetcher.Utility
             // Download them, prioritizing those closest to perfect
             foreach (var possibleIcon in notVerified)
             {
-                var image = DownloadImages_ReturnPerfect(possibleIcon.Location);
+                var image = await DownloadImages_ReturnPerfect(possibleIcon.Location, cancelTokenSource);
                 if (image != null)
                     return image;
             }
@@ -78,9 +79,9 @@ namespace FaviconFetcher.Utility
 
 
         // Downloads images. If perfect found, returns it.
-        private IconImage DownloadImages_ReturnPerfect(Uri uri)
+        private async Task<IconImage> DownloadImages_ReturnPerfect(Uri uri, CancellationTokenSource cancelTokenSource)
         {
-            foreach (var image in Source.DownloadImages(uri))
+            foreach (var image in await Source.DownloadImages(uri, cancelTokenSource))
             {
                 // If the image is scaleable, set the size to the requested
                 // perfect size so that it returned as such.
