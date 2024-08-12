@@ -1,3 +1,5 @@
+I'm not planning to continue updating this repo because I no longer have a need for the library in my personal projects, and that was my main motivator to maintain this. If someone wants to take over, let me know, and I can transfer the nuget package ownership too.
+
 # Favicon Fetcher
 
 FaviconFetcher contains tools for scanning a webpage for possible favicons (Scanner) and downloading the perfect one (Fetcher).
