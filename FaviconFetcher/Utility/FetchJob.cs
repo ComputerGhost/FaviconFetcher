@@ -82,6 +82,13 @@ namespace FaviconFetcher.Utility
         {
             foreach (var image in Source.DownloadImages(uri))
             {
+                // If the image is scaleable, set the size to the requested
+                // perfect size so that it returned as such.
+                if (image.Size == IconSize.Scaleable)
+                {
+                    image.Size = Options.PerfectSize;
+                }
+
                 if (_IsPerfect(image.Size))
                     return image;
                 if (!_IsInRange(image.Size))
@@ -107,6 +114,8 @@ namespace FaviconFetcher.Utility
         // Is a size within the min/max range?
         private bool _IsInRange(IconSize size)
         {
+            if (size.Width == IconSize.SCALEABLE_SIZE || size.Height == IconSize.SCALEABLE_SIZE)
+                return true;
             if (Options.RequireSquare && size.Width != size.Height)
                 return false;
             if (size.Width < Options.MinimumSize.Width)
@@ -125,6 +134,10 @@ namespace FaviconFetcher.Utility
         {
             if (Options.PerfectSize == IconSize.Empty)
                 return false;
+
+            if (size == IconSize.Scaleable)
+                return true;
+
             return size == Options.PerfectSize;
         }
 
